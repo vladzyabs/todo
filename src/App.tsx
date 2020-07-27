@@ -23,16 +23,31 @@ function App() {
       default:
          filterTasks = tasks
    }
-   
-   const removeTasks = (taskID: string) => {
+
+   const addTask = (title: string) => {
+      const newtask = {id: v1(), title: title.trim(), isDone: false}
+      setTasks( prevState => [newtask, ...prevState])
+   }
+
+   const removeTask = (taskID: string) => {
       setTasks(prevState => prevState.filter(t => t.id !== taskID))
+   }
+
+   const changeTaskStatus = (taskID: string, value: boolean) => {
+      const task = tasks.find(t => t.id === taskID)
+      if (task) {
+         task.isDone = value
+         setTasks(prevState => [...prevState])
+      }
    }
 
    return (
       <div className="App">
          <Todolist title={'todo 1'}
                    tasks={filterTasks}
-                   removeTasks={removeTasks}
+                   removeTask={removeTask}
+                   addTask={addTask}
+                   changeTaskStatus={changeTaskStatus}
                    changeFilter={setFilter}/>
       </div>
    );
