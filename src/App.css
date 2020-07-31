@@ -1,9 +1,0 @@
-.App {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-.error {border: 2px solid red;}
-.error-message {color: red;}
-.active-filter {background: rgba(0,0,255,0.2);}
-.task-is-done {opacity: 0.7; text-decoration: line-through;}

@@ -1,4 +1,8 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import {TextField} from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 
 type AddItemFromPropsType = {
    addItem: (title: string) => void
@@ -31,12 +35,19 @@ function AddItemFrom(props: AddItemFromPropsType) {
 
    return (
       <>
-         <input type="text"
-                value={title}
-                onChange={changeTitle}
-                onKeyPress={onPressEnter} className={error ? 'error' : ''}/>
-         <button onClick={addItem}>add</button>
-         {error ? <div className={'error-message'}>{error}</div> : ''}
+         <TextField id="outlined-basic"
+                    label="Title"
+                    variant="outlined"
+                    value={title}
+                    error={!!error}
+                    helperText={error}
+                    onChange={changeTitle}
+                    onKeyPress={onPressEnter}/>
+         <Tooltip title={'Add'} aria-label="add">
+            <IconButton aria-label="delete" onClick={addItem}>
+               <AddIcon color="action"/>
+            </IconButton>
+         </Tooltip>
       </>
    )
 }
