@@ -1,6 +1,13 @@
 import React, {ChangeEvent} from 'react';
 import AddItemFrom from '../ AddItemForm/AddItemForm';
 import EditableSpan from '../common/EditableSpan/EditableSpan';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import {Checkbox} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import styles from './Todolist.module.scss';
 
 export type FilterType = 'all' | 'active' | 'completed'
 
@@ -40,8 +47,8 @@ function Todolist(props: TodolistPropsType) {
       props.changeFilter(props.todoID, FilterValue)
    }
 
-   const filterBtnClasses = (filterValue: FilterType) => {
-      return props.filter === filterValue ? 'active-filter' : ''
+   const filterBtnVariant = (filterValue: FilterType) => {
+      return props.filter === filterValue ? 'contained' : 'outlined'
    }
 
    const removeTodo = () => props.removeTodo(props.todoID)
@@ -51,13 +58,15 @@ function Todolist(props: TodolistPropsType) {
    }
 
    return (
-      <div>
+      <Paper elevation={3} variant="outlined" className={styles.todo}>
          <h3><EditableSpan value={props.title} changeValue={onChangeTodoTitle}/>
-         <button onClick={removeTodo}>X</button></h3>
+            <IconButton aria-label="delete" onClick={removeTodo}>
+               <DeleteIcon color="action"/>
+            </IconButton>
+         </h3>
          <div>
             <AddItemFrom addItem={addTask}/>
          </div>
-         <ul>
             {
                props.tasks.map(t => {
                   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
@@ -67,24 +76,29 @@ function Todolist(props: TodolistPropsType) {
 
                   const onChangeTitle = (title: string) => props.changeTaskTitle(props.todoID, t.id, title)
 
-                  return <li key={t.id}>
-                     <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/>
+                  return <div key={t.id} className={styles.task}>
+                     <Checkbox
+                        color="primary"
+                        checked={t.isDone} onChange={onChangeHandler}
+                     />
                      <EditableSpan value={t.title} changeValue={onChangeTitle}/>
-                     {/*<span className={t.isDone && props.filter !== 'completed' ? 'task-is-done' : ''}>{t.title}</span>*/}
-                     <button onClick={onClickHandler}>remove</button>
-                  </li>
+                     <IconButton aria-label="delete" onClick={onClickHandler}>
+                        <DeleteIcon color="action"/>
+                     </IconButton>
+                  </div>
                })
             }
-         </ul>
          <div>
-            <button onClick={() => onClickFilter('all')}
-                    className={filterBtnClasses('all')}>All</button>
-            <button onClick={() => onClickFilter('active')}
-                    className={filterBtnClasses('active')}>Active</button>
-            <button onClick={() => onClickFilter('completed')}
-                    className={filterBtnClasses('completed')}>Completed</button>
+            <ButtonGroup color="primary" aria-label="filter button group">
+               <Button onClick={() => onClickFilter('all')}
+                       variant={filterBtnVariant('all')}>All</Button>
+               <Button onClick={() => onClickFilter('active')}
+                       variant={filterBtnVariant('active')}>Active</Button>
+               <Button onClick={() => onClickFilter('completed')}
+                       variant={filterBtnVariant('completed')}>Completed</Button>
+            </ButtonGroup>
          </div>
-      </div>
+      </Paper>
    )
 }
 
