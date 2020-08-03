@@ -1,12 +1,11 @@
 import {ActionType} from './todolistAction';
 import {TodolistType} from './todolistsType';
-import {v1} from 'uuid';
 
 export const todolistReducer = (state: TodolistType[], action: ActionType): TodolistType[] => {
    switch (action.type) {
       case 'ADD_TODO':
          return [
-            {id: v1(), title: action.title, filter: 'all'},
+            {id: action.todoID, title: action.title, filter: 'all'},
             ...state,
          ]
       case 'REMOVE_TODO':
@@ -28,6 +27,6 @@ export const todolistReducer = (state: TodolistType[], action: ActionType): Todo
             return t
          })
       default:
-         return state
+         return {...state}
    }
 }

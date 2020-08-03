@@ -1,18 +1,20 @@
 import {ADD_TODO, CHANGE_FILTER_TODO, CHANGE_TITLE_TODO, FilterType, REMOVE_TODO} from './todolistsType';
+import {v1} from 'uuid';
 
-type AddTodoActionType = { type: typeof ADD_TODO, title: string }
+export type AddTodoActionType = { type: typeof ADD_TODO, todoID: string, title: string }
 export const addTodoAC = (title: string): AddTodoActionType => {
    return {
       type: ADD_TODO,
-      title: title,
+      todoID: v1(),
+      title,
    }
 }
 
-type RemoveTodoActionType = { type: typeof REMOVE_TODO, todoID: string }
+export type RemoveTodoActionType = { type: typeof REMOVE_TODO, todoID: string }
 export const removeTodoAC = (todoID: string): RemoveTodoActionType => {
    return {
       type: REMOVE_TODO,
-      todoID: todoID,
+      todoID,
    }
 }
 
@@ -20,8 +22,8 @@ type ChangeTitleTodoActionType = { type: typeof CHANGE_TITLE_TODO, todoID: strin
 export const changeTitleTodoAC = (todoID: string, newValue: string): ChangeTitleTodoActionType => {
    return {
       type: CHANGE_TITLE_TODO,
-      todoID: todoID,
-      newValue: newValue,
+      todoID,
+      newValue,
    }
 }
 
@@ -29,8 +31,8 @@ type ChangeFilterTodoActionType = { type: typeof CHANGE_FILTER_TODO, todoID: str
 export const changeFilterTodoAC = (todoID: string, newValue: FilterType): ChangeFilterTodoActionType => {
    return {
       type: CHANGE_FILTER_TODO,
-      todoID: todoID,
-      newValue: newValue,
+      todoID,
+      newValue,
    }
 }
 
