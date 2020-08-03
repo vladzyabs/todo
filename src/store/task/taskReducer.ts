@@ -2,7 +2,9 @@ import {ActionType} from './taskAction';
 import {TasksStateType} from './taskType';
 import {v1} from 'uuid';
 
-export const taskReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
+const initialState: TasksStateType = {}
+
+export const taskReducer = (state = initialState, action: ActionType): TasksStateType => {
    switch (action.type) {
       case 'ADD_TASK':
          const newTask = {id: v1(), title: action.title, isDone: false}

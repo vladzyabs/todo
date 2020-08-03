@@ -1,7 +1,9 @@
 import {ActionType} from './todolistAction';
 import {TodolistType} from './todolistsType';
 
-export const todolistReducer = (state: TodolistType[], action: ActionType): TodolistType[] => {
+const initialState: TodolistType[] = []
+
+export const todolistReducer = (state = initialState, action: ActionType): TodolistType[] => {
    switch (action.type) {
       case 'ADD_TODO':
          return [
@@ -27,6 +29,6 @@ export const todolistReducer = (state: TodolistType[], action: ActionType): Todo
             return t
          })
       default:
-         return {...state}
+         return [...state]
    }
 }

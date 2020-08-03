@@ -8,20 +8,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import {Checkbox} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import styles from './Todolist.module.scss';
-
-export type FilterType = 'all' | 'active' | 'completed'
-
-export type TodolistType = {
-   id: string
-   title: string
-   filter: FilterType
-}
-
-export type TasksType = {
-   id: string
-   title: string
-   isDone: boolean
-}
+import {TasksType} from '../../store/task/taskType';
+import {FilterType} from '../../store/todolist/todolistsType';
 
 type TodolistPropsType = {
    todoID: string
