@@ -3,21 +3,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
 
-.task {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 3px;
-  padding: 3px 5px;
-
-  &:nth-child(2n) {
-    background: rgba(#9696ed, 0.2);
-  }
-
-  button {
-    margin: 0 0 0 auto;
+  .btnGroup {
+    margin-top: 10px;
   }
 }
+
+

@@ -15,16 +15,14 @@ export const todolistReducer = (state = initialState, action: ActionType): Todol
       case 'CHANGE_TITLE_TODO':
          return state.map(t => {
             if (t.id === action.todoID) {
-               t.title = action.newValue
-               return t
+               return {...t, title: action.newValue}
             }
             return t
          })
       case 'CHANGE_FILTER_TODO':
          return state.map(t => {
             if (t.id === action.todoID) {
-               t.filter = action.newValue
-               return t
+               return {...t, filter: action.newValue}
             }
             return t
          })
