@@ -65,7 +65,7 @@ function Todolist(props: TodolistPropsType) {
             })
          }
          <div>
-            <ButtonGroup color="primary" aria-label="filter button group">
+            <ButtonGroup color="primary" aria-label="filter button group" className={styles.btnGroup}>
                <Button onClick={() => onClickFilter('all')}
                        variant={filterBtnVariant('all')}>All</Button>
                <Button onClick={() => onClickFilter('active')}

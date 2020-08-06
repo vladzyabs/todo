@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import {TasksType} from '../../store/task/taskType';
-import styles from '../Todolist/Todolist.module.scss';
+import styles from './Task.module.scss';
 import {Checkbox} from '@material-ui/core';
 import EditableSpan from '../common/EditableSpan/EditableSpan';
 import IconButton from '@material-ui/core/IconButton';
