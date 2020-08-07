@@ -16,7 +16,7 @@ type TaskPropsType = {
 
 const Task = React.memo(
    (props: TaskPropsType) => {
-      console.log('render task')
+
       const {todoID, task, removeTask, changeTaskStatus, changeTaskTitle} = props
 
       const onChangeHandler = useCallback(

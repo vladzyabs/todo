@@ -10,7 +10,7 @@ type AddItemFromPropsType = {
 
 const AddItemFrom = React.memo(
    (props: AddItemFromPropsType) => {
-      console.log('render add item form')
+
       const {addItem} = props
 
       const [title, setTitle] = useState<string>('')

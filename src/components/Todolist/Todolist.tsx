@@ -27,7 +27,7 @@ type TodolistPropsType = {
 
 const Todolist = React.memo(
    (props: TodolistPropsType) => {
-      console.log('render todo')
+
       const {todoID, addTask, filter, changeFilter, removeTodo, changeTodoTitle} = props
 
       const addTaskCallback = useCallback(
