@@ -15,23 +15,23 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
       case 'REMOVE_TASK':
          return {
             ...state,
-            [action.todoID]: [...state[action.todoID].filter(t => t.id !== action.taskID)],
+            [action.todoID]: state[action.todoID].filter(t => t.id !== action.taskID),
          }
       case 'CHANGE_STATUS_TASK':
          return {
             ...state,
-            [action.todoID]: [...state[action.todoID].map(t => {
+            [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
                return {...t, isDone: action.newValue}
-            })]
+            })
          }
       case 'CHANGE_TITLE_TASK':
          return {
             ...state,
-            [action.todoID]: [...state[action.todoID].map(t => {
+            [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
                return {...t, title: action.newValue}
-            })]
+            })
          }
       case 'ADD_TODO':
          return {
@@ -42,6 +42,6 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
          delete state[action.todoID]
          return {...state}
       default:
-         return {...state}
+         return state
    }
 }
