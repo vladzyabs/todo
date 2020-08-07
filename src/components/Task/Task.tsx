@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {TasksType} from '../../store/task/taskType';
 import styles from './Task.module.scss';
 import {Checkbox} from '@material-ui/core';
@@ -14,25 +14,38 @@ type TaskPropsType = {
    changeTaskTitle: (todoID: string, taskID: string, value: string) => void
 }
 
-function Task(props: TaskPropsType) {
+const Task = React.memo(
+   (props: TaskPropsType) => {
+      console.log('render task')
+      const {todoID, task, removeTask, changeTaskStatus, changeTaskTitle} = props
 
-   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-      props.changeTaskStatus(props.todoID, props.task.id, e.currentTarget.checked)
+      const onChangeHandler = useCallback(
+         (e: ChangeEvent<HTMLInputElement>) =>
+            changeTaskStatus(todoID, task.id, e.currentTarget.checked),
+         [todoID, task.id, changeTaskStatus],
+      )
 
-   const onClickHandler = () => props.removeTask(props.todoID, props.task.id)
+      const onClickHandler = useCallback(
+         () => removeTask(todoID, task.id),
+         [todoID, task.id, removeTask],
+      )
 
-   const onChangeTitle = (title: string) => props.changeTaskTitle(props.todoID, props.task.id, title)
+      const onChangeTitle = useCallback(
+         (title: string) => changeTaskTitle(todoID, task.id, title),
+         [todoID, task.id, changeTaskTitle],
+      )
 
-   return <div className={styles.task}>
-      <Checkbox
-         color="primary"
-         checked={props.task.isDone} onChange={onChangeHandler}
-      />
-      <EditableSpan value={props.task.title} changeValue={onChangeTitle}/>
-      <IconButton aria-label="delete" onClick={onClickHandler}>
-         <DeleteIcon color="action"/>
-      </IconButton>
-   </div>
-}
+      return <div className={styles.task}>
+         <Checkbox
+            color="primary"
+            checked={task.isDone} onChange={onChangeHandler}
+         />
+         <EditableSpan value={task.title} changeValue={onChangeTitle}/>
+         <IconButton aria-label="delete" onClick={onClickHandler}>
+            <DeleteIcon color="action"/>
+         </IconButton>
+      </div>
+   },
+)
 
 export default Task

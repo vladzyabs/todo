@@ -27,6 +27,6 @@ export const todolistReducer = (state = initialState, action: ActionType): Todol
             return t
          })
       default:
-         return [...state]
+         return state
    }
 }
