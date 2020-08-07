@@ -7,55 +7,28 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Paper from '@material-ui/core/Paper';
 import styles from './Todolist.module.scss';
-import {TasksStateType} from '../../store/task/taskType';
+import {TasksType} from '../../store/task/taskType';
 import {FilterType} from '../../store/todolist/todolistsType';
 import Task from '../Task/Task';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from '../../store/store';
-import * as taskACs from '../../store/task/taskAction';
 
 type TodolistPropsType = {
    todoID: string
    title: string
    filter: FilterType
+   tasks: TasksType[]
    removeTodo: (todoID: string) => void
    changeTodoTitle: (todoID: string, value: string) => void
-   addTask: (todoID: string, title: string) => void
    changeFilter: (todoID: string, filter: FilterType) => void
+   addTask: (todoID: string, title: string) => void
+   removeTask: (todoID: string, tasksID: string) => void
+   changeTaskStatus: (todoID: string, taskID: string, value: boolean) => void
+   changeTaskTitle: (todoID: string, taskID: string, value: string) => void
 }
 
 const Todolist = React.memo(
    (props: TodolistPropsType) => {
       console.log('render todo')
       const {todoID, addTask, filter, changeFilter, removeTodo, changeTodoTitle} = props
-
-      const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.task)
-      const dispatch = useDispatch()
-
-      //action for task ----------------------------------------------------
-
-      const removeTask = useCallback(
-         (todoID: string, taskID: string) => {
-            dispatch(taskACs.removeTaskAC(todoID, taskID))
-         },
-         [dispatch],
-      )
-
-      const changeTaskStatus = useCallback(
-         (todoID: string, taskID: string, value: boolean) => {
-            dispatch(taskACs.changeStatusTaskAC(todoID, taskID, value))
-         },
-         [dispatch],
-      )
-
-      const changeTaskTitle = useCallback(
-         (todoID: string, taskID: string, value: string) => {
-            dispatch(taskACs.changeTitleTaskAC(todoID, taskID, value))
-         },
-         [dispatch],
-      )
-
-      // ----------------------------------------------------------------------
 
       const addTaskCallback = useCallback(
          (title: string) => {
@@ -90,16 +63,16 @@ const Todolist = React.memo(
          [filter],
       )
 
-      let filterTasks = tasks[props.todoID]
+      let filterTasks
       switch (filter) {
          case 'active':
-            filterTasks = tasks[props.todoID].filter(t => !t.isDone)
+            filterTasks = props.tasks.filter(t => !t.isDone)
             break
          case 'completed':
-            filterTasks = tasks[props.todoID].filter(t => t.isDone)
+            filterTasks = props.tasks.filter(t => t.isDone)
             break
          default:
-            filterTasks = tasks[props.todoID]
+            filterTasks = props.tasks
       }
 
       return (
@@ -116,9 +89,9 @@ const Todolist = React.memo(
                filterTasks.map(t => {
                   return <Task key={t.id} todoID={props.todoID}
                                task={t}
-                               removeTask={removeTask}
-                               changeTaskStatus={changeTaskStatus}
-                               changeTaskTitle={changeTaskTitle}/>
+                               removeTask={props.removeTask}
+                               changeTaskStatus={props.changeTaskStatus}
+                               changeTaskTitle={props.changeTaskTitle}/>
                })
             }
             <div>

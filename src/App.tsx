@@ -15,45 +15,68 @@ import * as taskACs from './store/task/taskAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './store/store';
 import {FilterType, TodolistType} from './store/todolist/todolistsType';
+import {TasksStateType} from './store/task/taskType';
 
 function App() {
 
    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todo)
+   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.task)
    const dispatch = useDispatch()
 
    const addTodo = useCallback(
       (title: string) => {
          dispatch(todoACs.addTodoAC(title))
       },
-      [dispatch]
+      [dispatch],
    )
 
    const removeTodo = useCallback(
       (todoID: string) => {
          dispatch(todoACs.removeTodoAC(todoID))
       },
-      [dispatch]
+      [dispatch],
    )
 
    const changeTodoTitle = useCallback(
       (todoID: string, value: string) => {
          dispatch(todoACs.changeTitleTodoAC(todoID, value))
       },
-      [dispatch]
+      [dispatch],
    )
 
    const changeFilter = useCallback(
       (todoID: string, value: FilterType) => {
          dispatch(todoACs.changeFilterTodoAC(todoID, value))
       },
-      [dispatch]
+      [dispatch],
    )
 
    const addTask = useCallback(
       (todoID: string, title: string) => {
          dispatch(taskACs.addTaskAC(todoID, title))
       },
-      [dispatch]
+      [dispatch],
+   )
+
+   const removeTask = useCallback(
+      (todoID: string, taskID: string) => {
+         dispatch(taskACs.removeTaskAC(todoID, taskID))
+      },
+      [dispatch],
+   )
+
+   const changeTaskStatus = useCallback(
+      (todoID: string, taskID: string, value: boolean) => {
+         dispatch(taskACs.changeStatusTaskAC(todoID, taskID, value))
+      },
+      [dispatch],
+   )
+
+   const changeTaskTitle = useCallback(
+      (todoID: string, taskID: string, value: string) => {
+         dispatch(taskACs.changeTitleTaskAC(todoID, taskID, value))
+      },
+      [dispatch],
    )
 
    return (
@@ -81,10 +104,14 @@ function App() {
                         <Todolist todoID={todo.id}
                                   title={todo.title}
                                   filter={todo.filter}
+                                  tasks={tasks[todo.id]}
                                   removeTodo={removeTodo}
                                   changeTodoTitle={changeTodoTitle}
                                   addTask={addTask}
-                                  changeFilter={changeFilter}/>
+                                  changeFilter={changeFilter}
+                                  changeTaskStatus={changeTaskStatus}
+                                  removeTask={removeTask}
+                                  changeTaskTitle={changeTaskTitle}/>
                      </Grid>
                   })
                }
