@@ -1,5 +1,6 @@
-import {ADD_TASK, CHANGE_STATUS_TASK, CHANGE_TITLE_TASK, REMOVE_TASK} from './taskType';
-import {AddTodoActionType, RemoveTodoActionType} from '../todolist/todolistAction';
+import {ADD_TASK, CHANGE_STATUS_TASK, CHANGE_TITLE_TASK, REMOVE_TASK} from './taskType'
+import {AddTodoActionType, RemoveTodoActionType} from '../todolist/todolistAction'
+import {TaskStatuses} from '../../api/apiType'
 
 type AddTaskActionType = { type: typeof ADD_TASK, todoID: string, title: string }
 export const addTaskAC = (todoID: string, title: string): AddTaskActionType => {
@@ -19,8 +20,8 @@ export const removeTaskAC = (todoID: string, taskID: string): RemoveTaskActionTy
    }
 }
 
-type ChangeStatusTaskActionType = { type: typeof CHANGE_STATUS_TASK, todoID: string, taskID: string, newValue: boolean }
-export const changeStatusTaskAC = (todoID: string, taskID: string, newValue: boolean): ChangeStatusTaskActionType => {
+type ChangeStatusTaskActionType = { type: typeof CHANGE_STATUS_TASK, todoID: string, taskID: string, newValue: TaskStatuses }
+export const changeStatusTaskAC = (todoID: string, taskID: string, newValue: TaskStatuses): ChangeStatusTaskActionType => {
    return {
       type: CHANGE_STATUS_TASK,
       todoID,

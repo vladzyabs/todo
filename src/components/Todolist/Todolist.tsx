@@ -1,15 +1,16 @@
-import React, {useCallback} from 'react';
-import AddItemFrom from '../ AddItemForm/AddItemForm';
-import EditableSpan from '../common/EditableSpan/EditableSpan';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Paper from '@material-ui/core/Paper';
-import styles from './Todolist.module.scss';
-import {TasksType} from '../../store/task/taskType';
-import {FilterType} from '../../store/todolist/todolistsType';
-import Task from '../Task/Task';
+import React, {useCallback} from 'react'
+import AddItemFrom from '../ AddItemForm/AddItemForm'
+import EditableSpan from '../common/EditableSpan/EditableSpan'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Paper from '@material-ui/core/Paper'
+import styles from './Todolist.module.scss'
+import {TasksType} from '../../store/task/taskType'
+import {FilterType} from '../../store/todolist/todolistsType'
+import Task from '../Task/Task'
+import {TaskStatuses} from '../../api/apiType'
 
 type TodolistPropsType = {
    todoID: string
@@ -21,7 +22,7 @@ type TodolistPropsType = {
    changeFilter: (todoID: string, filter: FilterType) => void
    addTask: (todoID: string, title: string) => void
    removeTask: (todoID: string, tasksID: string) => void
-   changeTaskStatus: (todoID: string, taskID: string, value: boolean) => void
+   changeTaskStatus: (todoID: string, taskID: string, value: TaskStatuses) => void
    changeTaskTitle: (todoID: string, taskID: string, value: string) => void
 }
 
@@ -66,10 +67,10 @@ const Todolist = React.memo(
       let filterTasks
       switch (filter) {
          case 'active':
-            filterTasks = props.tasks.filter(t => !t.isDone)
+            filterTasks = props.tasks.filter(t => t.status === TaskStatuses.New)
             break
          case 'completed':
-            filterTasks = props.tasks.filter(t => t.isDone)
+            filterTasks = props.tasks.filter(t => t.status === TaskStatuses.Completed)
             break
          default:
             filterTasks = props.tasks

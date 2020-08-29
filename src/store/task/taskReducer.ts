@@ -1,13 +1,14 @@
-import {ActionType} from './taskAction';
-import {TasksStateType} from './taskType';
-import {v1} from 'uuid';
+import {ActionType} from './taskAction'
+import {TasksStateType, TasksType} from './taskType'
+import {v1} from 'uuid'
+import {TaskStatuses, TodoTaskPriority} from '../../api/apiType'
 
 const initialState: TasksStateType = {}
 
 export const taskReducer = (state = initialState, action: ActionType): TasksStateType => {
    switch (action.type) {
       case 'ADD_TASK':
-         const newTask = {id: v1(), title: action.title, isDone: false}
+         const newTask: TasksType = {id: v1(), title: action.title, status: TaskStatuses.New, priority: TodoTaskPriority.Low, startDate: '', addedDate: '', deadline: '', todoListId: action.todoID, description: '', order: 0}
          return {
             ...state,
             [action.todoID]: [newTask, ...state[action.todoID]],
@@ -22,7 +23,7 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
             ...state,
             [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
-               return {...t, isDone: action.newValue}
+               return {...t, status: action.newValue}
             })
          }
       case 'CHANGE_TITLE_TASK':

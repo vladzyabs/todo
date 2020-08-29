@@ -1,5 +1,5 @@
-import {ActionType} from './todolistAction';
-import {TodolistType} from './todolistsType';
+import {ActionType} from './todolistAction'
+import {TodolistType} from './todolistsType'
 
 const initialState: TodolistType[] = []
 
@@ -7,7 +7,7 @@ export const todolistReducer = (state = initialState, action: ActionType): Todol
    switch (action.type) {
       case 'ADD_TODO':
          return [
-            {id: action.todoID, title: action.title, filter: 'all'},
+            {id: action.todoID, addedDate: '', title: action.title, filter: 'all', order: 0},
             ...state,
          ]
       case 'REMOVE_TODO':

@@ -1,21 +1,22 @@
-import React, {useCallback} from 'react';
-import './App.css';
-import Todolist from './components/Todolist/Todolist';
-import AddItemFrom from './components/ AddItemForm/AddItemForm';
-import {AppBar} from '@material-ui/core';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import * as todoACs from './store/todolist/todolistAction';
-import * as taskACs from './store/task/taskAction';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './store/store';
-import {FilterType, TodolistType} from './store/todolist/todolistsType';
-import {TasksStateType} from './store/task/taskType';
+import React, {useCallback} from 'react'
+import './App.css'
+import Todolist from './components/Todolist/Todolist'
+import AddItemFrom from './components/ AddItemForm/AddItemForm'
+import {AppBar} from '@material-ui/core'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import * as todoACs from './store/todolist/todolistAction'
+import * as taskACs from './store/task/taskAction'
+import {useDispatch, useSelector} from 'react-redux'
+import {AppRootStateType} from './store/store'
+import {FilterType, TodolistType} from './store/todolist/todolistsType'
+import {TasksStateType} from './store/task/taskType'
+import {TaskStatuses} from './api/apiType'
 
 function App() {
 
@@ -66,7 +67,7 @@ function App() {
    )
 
    const changeTaskStatus = useCallback(
-      (todoID: string, taskID: string, value: boolean) => {
+      (todoID: string, taskID: string, value: TaskStatuses) => {
          dispatch(taskACs.changeStatusTaskAC(todoID, taskID, value))
       },
       [dispatch],
@@ -119,7 +120,7 @@ function App() {
          </Container>
 
       </div>
-   );
+   )
 }
 
-export default App;
+export default App
