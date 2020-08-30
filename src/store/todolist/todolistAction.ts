@@ -68,7 +68,6 @@ export const removeTodoTC = (todoID: string) =>
       todoAPI.deleteTodo(todoID)
          .then(res => {
             if (res.data.resultCode === 0) {
-               debugger
                dispatch(removeTodoAC(todoID))
             }
          })

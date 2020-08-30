@@ -26,20 +26,12 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
             ...state,
             [action.todoID]: state[action.todoID].filter(t => t.id !== action.taskID),
          }
-      case 'CHANGE_STATUS_TASK':
+      case 'UPDATE_TASK':
          return {
             ...state,
             [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
-               return {...t, status: action.newValue}
-            }),
-         }
-      case 'CHANGE_TITLE_TASK':
-         return {
-            ...state,
-            [action.todoID]: state[action.todoID].map(t => {
-               if (t.id !== action.taskID) return t
-               return {...t, title: action.newValue}
+               return {...t, ...action.model}
             }),
          }
       case 'ADD_TODO':
