@@ -1,6 +1,7 @@
-import {TodolistType} from './todolistsType';
+import {TodolistType} from './todolistsType'
 import {todolistReducer} from './todolistReducer'
 import * as actions from './todolistAction'
+import {setTodosAC} from './todolistAction'
 
 let initialState: TodolistType[]
 let endState: TodolistType[]
@@ -14,13 +15,13 @@ beforeEach(() => {
 })
 
 test('new todo should be added', () => {
-   let action = actions.addTodoAC('todo 4')
+   let action = actions.addTodoAC({id: 'new', title: 'new', order: 0, addedDate: 'now'})
 
    endState = todolistReducer(initialState, action)
 
    expect(endState.length).toBe(4)
    expect(endState[0].id).toBeDefined()
-   expect(endState[0].title).toBe('todo 4')
+   expect(endState[0].title).toBe('new')
    expect(endState[0].filter).toBe('all')
 })
 
@@ -54,4 +55,15 @@ test('correct todo should change its filter', () => {
    expect(endState[0].filter).toBe(initialState[0].filter)
    expect(endState[1].filter).toBe(initialState[1].filter)
    expect(endState[2].filter).toBe('completed')
+})
+
+test('todolists should be added', () => {
+   const action = setTodosAC([
+      {id: '1', title: 'title 1', order: 0, addedDate: ''},
+      {id: '2', title: 'title 2', order: 0, addedDate: ''},
+   ])
+
+   const endState = todolistReducer([], action)
+
+   expect(endState.length).toBe(2)
 })
