@@ -1,16 +1,25 @@
-import {ActionType} from './taskAction';
-import {TasksStateType} from './taskType';
-import {v1} from 'uuid';
+import {ActionType} from './taskAction'
+import {TasksStateType, TasksType} from './taskType'
 
 const initialState: TasksStateType = {}
 
 export const taskReducer = (state = initialState, action: ActionType): TasksStateType => {
    switch (action.type) {
+      case 'SET_TODOS':
+         const copyState = {...state}
+         action.todos.forEach(todo => {
+            return copyState[todo.id] = []
+         })
+         return copyState
+      case 'SET_TASKS':
+         const copyStatee = {...state}
+         copyStatee[action.todoID] = action.tasks
+         return copyStatee
       case 'ADD_TASK':
-         const newTask = {id: v1(), title: action.title, isDone: false}
+         const newTask: TasksType = action.task
          return {
             ...state,
-            [action.todoID]: [newTask, ...state[action.todoID]],
+            [action.task.todoListId]: [newTask, ...state[action.task.todoListId]],
          }
       case 'REMOVE_TASK':
          return {
@@ -22,8 +31,8 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
             ...state,
             [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
-               return {...t, isDone: action.newValue}
-            })
+               return {...t, status: action.newValue}
+            }),
          }
       case 'CHANGE_TITLE_TASK':
          return {
@@ -31,12 +40,12 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
             [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
                return {...t, title: action.newValue}
-            })
+            }),
          }
       case 'ADD_TODO':
          return {
             ...state,
-            [action.todoID]: []
+            [action.todo.id]: [],
          }
       case 'REMOVE_TODO':
          delete state[action.todoID]

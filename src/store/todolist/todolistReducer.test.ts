@@ -6,9 +6,9 @@ let initialState: TodolistType[]
 let endState: TodolistType[]
 beforeEach(() => {
    initialState = [
-      {id: '1', title: 'todo 1', filter: 'all'},
-      {id: '2', title: 'todo 2', filter: 'all'},
-      {id: '3', title: 'todo 3', filter: 'all'},
+      {id: '1', title: 'todo 1', filter: 'all', order: 0, addedDate: ''},
+      {id: '2', title: 'todo 2', filter: 'all', order: 0, addedDate: ''},
+      {id: '3', title: 'todo 3', filter: 'all', order: 0, addedDate: ''},
    ]
    endState = []
 })
