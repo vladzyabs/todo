@@ -5,9 +5,11 @@ const initialState: TodolistType[] = []
 
 export const todolistReducer = (state = initialState, action: ActionType): TodolistType[] => {
    switch (action.type) {
+      case 'SET_TODOS':
+         return action.todos.map(todo => ({...todo, filter: 'all'}))
       case 'ADD_TODO':
          return [
-            {id: action.todoID, addedDate: '', title: action.title, filter: 'all', order: 0},
+            {...action.todo, filter: 'all'},
             ...state,
          ]
       case 'REMOVE_TODO':

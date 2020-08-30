@@ -44,3 +44,12 @@ export type GetTasksResponseType = {
    error: string | null
    totalCount: number
 }
+
+export type UpdateTaskModelType = {
+   title: string
+   description: string
+   status: number
+   priority: number
+   startDate: string
+   deadline: string
+}

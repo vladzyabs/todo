@@ -1,17 +1,25 @@
 import {ActionType} from './taskAction'
 import {TasksStateType, TasksType} from './taskType'
-import {v1} from 'uuid'
-import {TaskStatuses, TodoTaskPriority} from '../../api/apiType'
 
 const initialState: TasksStateType = {}
 
 export const taskReducer = (state = initialState, action: ActionType): TasksStateType => {
    switch (action.type) {
+      case 'SET_TODOS':
+         const copyState = {...state}
+         action.todos.forEach(todo => {
+            return copyState[todo.id] = []
+         })
+         return copyState
+      case 'SET_TASKS':
+         const copyStatee = {...state}
+         copyStatee[action.todoID] = action.tasks
+         return copyStatee
       case 'ADD_TASK':
-         const newTask: TasksType = {id: v1(), title: action.title, status: TaskStatuses.New, priority: TodoTaskPriority.Low, startDate: '', addedDate: '', deadline: '', todoListId: action.todoID, description: '', order: 0}
+         const newTask: TasksType = action.task
          return {
             ...state,
-            [action.todoID]: [newTask, ...state[action.todoID]],
+            [action.task.todoListId]: [newTask, ...state[action.task.todoListId]],
          }
       case 'REMOVE_TASK':
          return {
@@ -24,7 +32,7 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
             [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
                return {...t, status: action.newValue}
-            })
+            }),
          }
       case 'CHANGE_TITLE_TASK':
          return {
@@ -32,12 +40,12 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
             [action.todoID]: state[action.todoID].map(t => {
                if (t.id !== action.taskID) return t
                return {...t, title: action.newValue}
-            })
+            }),
          }
       case 'ADD_TODO':
          return {
             ...state,
-            [action.todoID]: []
+            [action.todo.id]: [],
          }
       case 'REMOVE_TODO':
          delete state[action.todoID]

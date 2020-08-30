@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import AddItemFrom from '../ AddItemForm/AddItemForm'
 import EditableSpan from '../common/EditableSpan/EditableSpan'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,6 +11,8 @@ import {TasksType} from '../../store/task/taskType'
 import {FilterType} from '../../store/todolist/todolistsType'
 import Task from '../Task/Task'
 import {TaskStatuses} from '../../api/apiType'
+import {useDispatch} from 'react-redux'
+import {getTasksTC} from '../../store/task/taskAction'
 
 type TodolistPropsType = {
    todoID: string
@@ -30,18 +32,21 @@ const Todolist = React.memo(
    (props: TodolistPropsType) => {
 
       const {todoID, addTask, filter, changeFilter, removeTodo, changeTodoTitle} = props
+      const dispatch = useDispatch()
+
+      useEffect(
+         () => {
+            dispatch(getTasksTC(todoID))
+         },
+         [dispatch, todoID])
 
       const addTaskCallback = useCallback(
-         (title: string) => {
-            addTask(todoID, title)
-         },
+         (title: string) => addTask(todoID, title),
          [todoID, addTask],
       )
 
       const onClickFilter = useCallback(
-         (FilterValue: FilterType) => {
-            changeFilter(todoID, FilterValue)
-         },
+         (FilterValue: FilterType) => changeFilter(todoID, FilterValue),
          [todoID, changeFilter],
       )
 
@@ -51,16 +56,12 @@ const Todolist = React.memo(
       )
 
       const onChangeTodoTitle = useCallback(
-         (value: string) => {
-            changeTodoTitle(todoID, value)
-         },
+         (value: string) => changeTodoTitle(todoID, value),
          [todoID, changeTodoTitle],
       )
 
       const filterBtnVariant = useCallback(
-         (filterValue: FilterType) => {
-            return filter === filterValue ? 'contained' : 'outlined'
-         },
+         (filterValue: FilterType) => filter === filterValue ? 'contained' : 'outlined',
          [filter],
       )
 
