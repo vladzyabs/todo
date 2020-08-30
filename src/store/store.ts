@@ -4,8 +4,8 @@ import {todolistReducer} from './todolist/todolistReducer'
 import {taskReducer} from './task/taskReducer'
 
 const rootReducer = combineReducers({
-   todo: todolistReducer,
-   task: taskReducer,
+   todos: todolistReducer,
+   tasks: taskReducer,
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunk))

@@ -22,12 +22,12 @@ import {
    removeTodoTC,
    updateTodoTitleTC,
 } from './store/todolist/todolistAction'
-import {addTaskTC, changeTaskStatusTC, changeTaskTitleTC, removeTaskTC} from './store/task/taskAction'
+import {addTaskTC, removeTaskTC, updateTaskTC} from './store/task/taskAction'
 
 function App() {
 
-   const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todo)
-   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.task)
+   const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todos)
+   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
    const dispatch = useDispatch()
 
    useEffect(
@@ -69,13 +69,13 @@ function App() {
 
    const changeTaskStatus = useCallback(
       (todoID: string, taskID: string, value: TaskStatuses) =>
-         dispatch(changeTaskStatusTC(todoID, taskID, value)),
+         dispatch(updateTaskTC(todoID, taskID, {status: value})),
       [dispatch],
    )
 
    const changeTaskTitle = useCallback(
       (todoID: string, taskID: string, value: string) =>
-         dispatch(changeTaskTitleTC(todoID, taskID, value)),
+         dispatch(updateTaskTC(todoID, taskID, {title: value})),
       [dispatch],
    )
 
