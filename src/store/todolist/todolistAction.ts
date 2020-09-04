@@ -1,7 +1,17 @@
-import {ADD_TODO, CHANGE_FILTER_TODO, CHANGE_TITLE_TODO, FilterType, REMOVE_TODO, SET_TODOS} from './todolistsType'
+import {
+   ADD_TODO,
+   CHANGE_FILTER_TODO,
+   CHANGE_TITLE_TODO,
+   EntityStatusType,
+   FilterType,
+   REMOVE_TODO, SET_ENTITE_STATUS,
+   SET_TODOS,
+} from './todolistsType'
 import {TodoAPIType} from '../../api/apiType'
 import {Dispatch} from 'redux'
 import {todoAPI} from '../../api/api'
+import {setAppStatusAC} from '../app/appAction'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
 // actions =============================================================================================================
 
@@ -37,48 +47,79 @@ export const setTodosAC = (todos: TodoAPIType[]): SetTodosActionType => ({
    todos,
 })
 
+export const setTodoEntityStatus = (todoID: string, status: EntityStatusType) => ({type: SET_ENTITE_STATUS, todoID, status} as const)
+type SetTodoEntityStatusActionType = ReturnType<typeof setTodoEntityStatus>
+
 export type ActionType
    = AddTodoActionType
    | RemoveTodoActionType
    | ChangeTitleTodoActionType
    | ChangeFilterTodoActionType
    | SetTodosActionType
+   | SetTodoEntityStatusActionType
 
 // thunks ==============================================================================================================
 
 export const getTodosTC = (dispatch: Dispatch) => {
+   dispatch(setAppStatusAC('loading'))
    todoAPI.getTodos()
       .then(res => {
          dispatch(setTodosAC(res.data))
+         dispatch(setAppStatusAC('succeeded'))
+      })
+      .catch(error => {
+         handleServerNetworkError(error, dispatch)
       })
 }
 
 export const addTodoTC = (title: string) =>
    (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
       todoAPI.createTodo(title)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(addTodoAC(res.data.data.item))
+               dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
 
 export const removeTodoTC = (todoID: string) =>
    (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
+      dispatch(setTodoEntityStatus(todoID, 'loading'))
       todoAPI.deleteTodo(todoID)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(removeTodoAC(todoID))
+               dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
 
 export const updateTodoTitleTC = (todoID: string, title: string) =>
    (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
       todoAPI.updateTodo(todoID, title)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(changeTitleTodoAC(todoID, title))
+               dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }

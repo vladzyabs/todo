@@ -1,11 +1,12 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import IconButton from '@material-ui/core/IconButton';
-import {TextField} from '@material-ui/core';
-import Tooltip from '@material-ui/core/Tooltip';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react'
+import AddIcon from '@material-ui/icons/Add'
+import IconButton from '@material-ui/core/IconButton'
+import {TextField} from '@material-ui/core'
+import Tooltip from '@material-ui/core/Tooltip'
 
 type AddItemFromPropsType = {
    addItem: (title: string) => void
+   disabled?: boolean
 }
 
 const AddItemFrom = React.memo(
@@ -51,9 +52,11 @@ const AddItemFrom = React.memo(
                        error={!!error}
                        helperText={error}
                        onChange={changeTitle}
-                       onKeyPress={onPressEnter}/>
+                       onKeyPress={onPressEnter}
+                       disabled={props.disabled}/>
             <Tooltip title={'Add'} aria-label="add">
-               <IconButton aria-label="delete" onClick={clickAddItem}>
+               <IconButton aria-label="delete" onClick={clickAddItem}
+                           disabled={props.disabled}>
                   <AddIcon color="action"/>
                </IconButton>
             </Tooltip>
