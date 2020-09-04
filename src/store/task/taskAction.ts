@@ -4,7 +4,8 @@ import {TaskAPIType, UpdateTaskModelType} from '../../api/apiType'
 import {Dispatch} from 'redux'
 import {taskAPI} from '../../api/api'
 import {AppRootStateType} from '../store'
-import {setAppStatusAC} from '../app/appAction'
+import {setAppErrorAC, setAppStatusAC} from '../app/appAction'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
 // actions =============================================================================================================
 
@@ -64,7 +65,16 @@ export const getTasksTC = (todoID: string) =>
             if (!res.data.error) {
                dispatch(setTasksAC(todoID, res.data.items))
                dispatch(setAppStatusAC('succeeded'))
+            } else {
+               if (res.data.error) {
+                  dispatch(setAppErrorAC(res.data.error))
+               } else {
+                  dispatch(setAppErrorAC('Oops, some error occurred'))
+               }
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
 
@@ -76,7 +86,12 @@ export const addTaskTC = (todoID: string, title: string) =>
             if (res.data.resultCode === 0) {
                dispatch(addTaskAC(res.data.data.item))
                dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerAppError(error, dispatch)
          })
    }
 
@@ -88,7 +103,12 @@ export const removeTaskTC = (todoID: string, taskID: string) =>
             if (res.data.resultCode === 0) {
                dispatch(removeTaskAC(todoID, taskID))
                dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
 
@@ -114,6 +134,11 @@ export const updateTaskTC = (todoID: string, taskID: string, changingValue: Upda
             if (res.data.resultCode === 0) {
                dispatch(updateTaskAC(todoID, taskID, model))
                dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerAppError(error, dispatch)
          })
    }

@@ -4,7 +4,7 @@ import {ResponseType} from '../api/apiType'
 
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {
    dispatch(setAppStatusAC('failed'))
-   if (data.messages.length) {
+   if (data.messages && data.messages.length) {
       dispatch(setAppErrorAC(data.messages[0]))
    } else {
       dispatch(setAppErrorAC('Oops, some error occurred'))
