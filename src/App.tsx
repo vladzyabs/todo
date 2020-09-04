@@ -25,6 +25,7 @@ import {
 } from './store/todolist/todolistAction'
 import {addTaskTC, removeTaskTC, updateTaskTC} from './store/task/taskAction'
 import {RequestStatusType} from './store/app/appType'
+import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar'
 
 function App() {
 
@@ -123,6 +124,7 @@ function App() {
             </Grid>
          </Container>
 
+         <ErrorSnackbar/>
       </div>
    )
 }
