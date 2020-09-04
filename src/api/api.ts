@@ -14,15 +14,32 @@ const instance = axios.create({
 })
 
 export const todoAPI = {
-   getTodos: () => instance.get<TodoAPIType[]>(`todo-lists`),
-   createTodo: (title: string) => instance.post<ResponseType<{ item: TodoAPIType }>>(`todo-lists`, {title}),
-   deleteTodo: (todoID: string) => instance.delete<ResponseType>(`todo-lists/${todoID}`),
-   updateTodo: (todoID: string, title: string) => instance.put<ResponseType>(`todo-lists/${todoID}`, {title}),
+   getTodos: () =>
+      instance.get<TodoAPIType[]>(`todo-lists`),
+   createTodo: (title: string) =>
+      instance.post<ResponseType<{ item: TodoAPIType }>>(`todo-lists`, {title}),
+   deleteTodo: (todoID: string) =>
+      instance.delete<ResponseType>(`todo-lists/${todoID}`),
+   updateTodo: (todoID: string, title: string) =>
+      instance.put<ResponseType>(`todo-lists/${todoID}`, {title}),
 }
 
 export const taskAPI = {
-   getTasks: (todoID: string) => instance.get<GetTasksResponseType>(`todo-lists/${todoID}/tasks`),
-   createTask: (todoID: string, title: string) => instance.post<ResponseType<{ item: TaskAPIType }>>(`todo-lists/${todoID}/tasks`, {title}),
-   deleteTask: (todoID: string, taskID: string) => instance.delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`),
-   updateTask: (todoID: string, taskID: string, model: UpdateTaskModelType) => instance.put<ResponseType<{ item: TaskAPIType }>>(`todo-lists/${todoID}/tasks/${taskID}`, model),
+   getTasks: (todoID: string) =>
+      instance.get<GetTasksResponseType>(`todo-lists/${todoID}/tasks`),
+   createTask: (todoID: string, title: string) =>
+      instance.post<ResponseType<{ item: TaskAPIType }>>(`todo-lists/${todoID}/tasks`, {title}),
+   deleteTask: (todoID: string, taskID: string) =>
+      instance.delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`),
+   updateTask: (todoID: string, taskID: string, model: UpdateTaskModelType) =>
+      instance.put<ResponseType<{ item: TaskAPIType }>>(`todo-lists/${todoID}/tasks/${taskID}`, model),
+}
+
+export const authAPI = {
+   getMe: () =>
+      instance.get<ResponseType<{ id: number, email: string, login: string }>>(`/auth/me`),
+   login: (email: string, password: string, rememberMe: boolean, captcha: boolean) =>
+      instance.post<ResponseType<{ userId: number }>>(`/auth/login`, {email, password, rememberMe, captcha}),
+   logout: () =>
+      instance.delete<ResponseType>(`/auth/login`),
 }
