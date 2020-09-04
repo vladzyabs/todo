@@ -53,3 +53,10 @@ export type UpdateTaskModelType = {
    startDate: string
    deadline: string
 }
+
+export type RequestLoginType = {
+   email: string
+   password: string
+   rememberMe: boolean
+   captcha: boolean
+}
