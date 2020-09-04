@@ -8,7 +8,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Paper from '@material-ui/core/Paper'
 import styles from './Todolist.module.scss'
 import {TasksType} from '../../store/task/taskType'
-import {FilterType} from '../../store/todolist/todolistsType'
+import {EntityStatusType, FilterType} from '../../store/todolist/todolistsType'
 import Task from '../Task/Task'
 import {TaskStatuses} from '../../api/apiType'
 import {useDispatch} from 'react-redux'
@@ -16,6 +16,7 @@ import {getTasksTC} from '../../store/task/taskAction'
 
 type TodolistPropsType = {
    todoID: string
+   entityStatus: EntityStatusType
    title: string
    filter: FilterType
    tasks: TasksType[]
@@ -79,13 +80,14 @@ const Todolist = React.memo(
 
       return (
          <Paper elevation={3} variant="outlined" className={styles.todo}>
-            <h3><EditableSpan value={props.title} changeValue={onChangeTodoTitle}/>
-               <IconButton aria-label="delete" onClick={removeTodoCallback}>
+            <h3>
+               <EditableSpan value={props.title} changeValue={onChangeTodoTitle}/>
+               <IconButton aria-label="delete" onClick={removeTodoCallback} disabled={props.entityStatus === 'loading'}>
                   <DeleteIcon color="action"/>
                </IconButton>
             </h3>
             <div>
-               <AddItemFrom addItem={addTaskCallback}/>
+               <AddItemFrom addItem={addTaskCallback} disabled={props.entityStatus === 'loading'}/>
             </div>
             {
                filterTasks.map(t => {

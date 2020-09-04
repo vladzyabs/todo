@@ -108,6 +108,7 @@ function App() {
                      let allTodolistTasks = tasks[todo.id]
                      return <Grid item key={todo.id}>
                         <Todolist todoID={todo.id}
+                                  entityStatus={todo.entityStatus}
                                   title={todo.title}
                                   filter={todo.filter}
                                   tasks={allTodolistTasks}
