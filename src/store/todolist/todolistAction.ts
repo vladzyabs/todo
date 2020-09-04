@@ -3,6 +3,7 @@ import {TodoAPIType} from '../../api/apiType'
 import {Dispatch} from 'redux'
 import {todoAPI} from '../../api/api'
 import {setAppStatusAC} from '../app/appAction'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
 // actions =============================================================================================================
 
@@ -54,6 +55,9 @@ export const getTodosTC = (dispatch: Dispatch) => {
          dispatch(setTodosAC(res.data))
          dispatch(setAppStatusAC('succeeded'))
       })
+      .catch(error => {
+         handleServerNetworkError(error, dispatch)
+      })
 }
 
 export const addTodoTC = (title: string) =>
@@ -64,7 +68,12 @@ export const addTodoTC = (title: string) =>
             if (res.data.resultCode === 0) {
                dispatch(addTodoAC(res.data.data.item))
                dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
 
@@ -76,7 +85,12 @@ export const removeTodoTC = (todoID: string) =>
             if (res.data.resultCode === 0) {
                dispatch(removeTodoAC(todoID))
                dispatch(setAppStatusAC('succeeded'))
+            } else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
 
@@ -88,6 +102,11 @@ export const updateTodoTitleTC = (todoID: string, title: string) =>
             if (res.data.resultCode === 0) {
                dispatch(changeTitleTodoAC(todoID, title))
                dispatch(setAppStatusAC('succeeded'))
+            }else {
+               handleServerAppError(res.data, dispatch)
             }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
          })
    }
