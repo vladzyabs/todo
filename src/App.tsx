@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store/store'
 import {FilterType, TodolistType} from './store/todolist/todolistsType'
@@ -23,11 +24,13 @@ import {
    updateTodoTitleTC,
 } from './store/todolist/todolistAction'
 import {addTaskTC, removeTaskTC, updateTaskTC} from './store/task/taskAction'
+import {RequestStatusType} from './store/app/appType'
 
 function App() {
 
    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todos)
    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+   const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
    const dispatch = useDispatch()
 
    useEffect(
@@ -91,6 +94,7 @@ function App() {
                </Typography>
                <Button color="inherit">Login</Button>
             </Toolbar>
+            {appStatus === 'loading' && <LinearProgress style={{position: 'absolute', top: '0', width: '100%'}}/>}
          </AppBar>
 
          <Container fixed>

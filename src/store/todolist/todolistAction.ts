@@ -2,6 +2,7 @@ import {ADD_TODO, CHANGE_FILTER_TODO, CHANGE_TITLE_TODO, FilterType, REMOVE_TODO
 import {TodoAPIType} from '../../api/apiType'
 import {Dispatch} from 'redux'
 import {todoAPI} from '../../api/api'
+import {setAppStatusAC} from '../app/appAction'
 
 // actions =============================================================================================================
 
@@ -47,38 +48,46 @@ export type ActionType
 // thunks ==============================================================================================================
 
 export const getTodosTC = (dispatch: Dispatch) => {
+   dispatch(setAppStatusAC('loading'))
    todoAPI.getTodos()
       .then(res => {
          dispatch(setTodosAC(res.data))
+         dispatch(setAppStatusAC('succeeded'))
       })
 }
 
 export const addTodoTC = (title: string) =>
    (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
       todoAPI.createTodo(title)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(addTodoAC(res.data.data.item))
+               dispatch(setAppStatusAC('succeeded'))
             }
          })
    }
 
 export const removeTodoTC = (todoID: string) =>
    (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
       todoAPI.deleteTodo(todoID)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(removeTodoAC(todoID))
+               dispatch(setAppStatusAC('succeeded'))
             }
          })
    }
 
 export const updateTodoTitleTC = (todoID: string, title: string) =>
    (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
       todoAPI.updateTodo(todoID, title)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(changeTitleTodoAC(todoID, title))
+               dispatch(setAppStatusAC('succeeded'))
             }
          })
    }
