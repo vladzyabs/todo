@@ -39,7 +39,8 @@ const Todolist = React.memo(
          () => {
             dispatch(getTasksTC(todoID))
          },
-         [dispatch, todoID])
+         [dispatch, todoID],
+      )
 
       const addTaskCallback = useCallback(
          (title: string) => addTask(todoID, title),
