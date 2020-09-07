@@ -1,4 +1,5 @@
 import React from 'react'
+import {Redirect} from 'react-router-dom'
 import {Grid} from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
@@ -8,9 +9,19 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 import {useFormik} from 'formik'
+import {login} from '../../store/auth/authAction'
+import {useDispatch, useSelector} from 'react-redux'
+import {AppRootStateType} from '../../store/store'
+import {paths} from '../../layout/paths'
 
 export const Login = React.memo(
    (props: {}) => {
+      const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+      const dispatch = useDispatch()
+
+      if (isAuth) {
+         return <Redirect to={paths.todo}/>
+      }
 
       const formik = useFormik({
          initialValues: {
@@ -18,8 +29,20 @@ export const Login = React.memo(
             password: '',
             rememberMe: false,
          },
+         validate: values => {
+            if (!values.email) {
+               return {email: 'bad email'}
+            }
+            if (!values.password) {
+               return {password: 'bad password'}
+            }
+            // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            //    return {email: 'Invalid email address'}
+            // }
+         },
          onSubmit: values => {
-            alert(JSON.stringify(values, null, 2))
+            // alert(JSON.stringify(values, null, 2))
+            dispatch(login(values.email, values.password, values.rememberMe))
          },
       })
 
@@ -29,31 +52,27 @@ export const Login = React.memo(
                <form onSubmit={formik.handleSubmit}>
                   <FormControl>
                      <FormLabel>
-                        To log in get registered <a href={'https://social-network.samuraijs.com/'}>here</a>
-                        or use common test account credentials. <br/>
-                        Email: free@samuraijs.com <br/>
-                        Password: free
+                        <p>To log in get registered <a href={'https://social-network.samuraijs.com/'}>here</a></p>
+                        <p>or use common test account credentials:</p>
+                        <p>Email: free@samuraijs.com </p>
+                        <p>Password: free</p>
                      </FormLabel>
                      <FormGroup>
 
-                        <TextField name={'email'}
-                                   label={'Email'}
+                        <TextField label={'Email'}
                                    margin={'normal'}
-                                   onChange={formik.handleChange}
-                                   value={formik.values.email}/>
+                                   {...formik.getFieldProps('email')}/>
+                        {formik.errors.email ? <div>{formik.errors.email}</div> : null}
 
-                        <TextField name={'password'}
-                                   label={'password'}
+                        <TextField label={'password'}
                                    margin={'normal'}
                                    type={'password'}
-                                   onChange={formik.handleChange}
-                                   value={formik.values.password}/>
+                                   {...formik.getFieldProps('password')}/>
+                        {formik.errors.password ? <div>{formik.errors.password}</div> : null}
 
                         <FormControlLabel label={'Remember me'}
-                                          control={<Checkbox name={'rememberMe'}
-                                                             color={'primary'}
-                                                             onChange={formik.handleChange}
-                                                             value={formik.values.rememberMe}/>}/>
+                                          control={<Checkbox color={'primary'}
+                                                             {...formik.getFieldProps('rememberMe')}/>}/>
 
                         <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
 

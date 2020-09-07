@@ -38,8 +38,8 @@ export const taskAPI = {
 export const authAPI = {
    getMe: () =>
       instance.get<ResponseType<{ id: number, email: string, login: string }>>(`/auth/me`),
-   login: (email: string, password: string, rememberMe: boolean, captcha: boolean) =>
-      instance.post<ResponseType<{ userId: number }>>(`/auth/login`, {email, password, rememberMe, captcha}),
+   login: (email: string, password: string, rememberMe: boolean, captcha?: string) =>
+      instance.post<ResponseType<{ userId?: number }>>(`/auth/login`, {email, password, rememberMe, captcha}),
    logout: () =>
       instance.delete<ResponseType>(`/auth/login`),
 }
