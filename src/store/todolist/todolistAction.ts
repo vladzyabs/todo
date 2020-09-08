@@ -60,7 +60,7 @@ export type ActionType
 
 // thunks ==============================================================================================================
 
-export const getTodosTC = (dispatch: Dispatch) => {
+export const getTodosTC = () => (dispatch: Dispatch) => {
    dispatch(setAppStatusAC('loading'))
    todoAPI.getTodos()
       .then(res => {
