@@ -1,5 +1,4 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
 import {Grid} from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
@@ -10,18 +9,11 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 import {useFormik} from 'formik'
 import {login} from '../../store/auth/authAction'
-import {useDispatch, useSelector} from 'react-redux'
-import {AppRootStateType} from '../../store/store'
-import {paths} from '../../layout/paths'
+import {useDispatch} from 'react-redux'
 
 export const Login = React.memo(
    (props: {}) => {
-      const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
       const dispatch = useDispatch()
-
-      if (isAuth) {
-         return <Redirect to={paths.todo}/>
-      }
 
       const formik = useFormik({
          initialValues: {
@@ -36,12 +28,11 @@ export const Login = React.memo(
             if (!values.password) {
                return {password: 'bad password'}
             }
-            // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-            //    return {email: 'Invalid email address'}
-            // }
+            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+               return {email: 'Invalid email address'}
+            }
          },
          onSubmit: values => {
-            // alert(JSON.stringify(values, null, 2))
             dispatch(login(values.email, values.password, values.rememberMe))
          },
       })

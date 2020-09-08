@@ -21,13 +21,14 @@ export const TodolistsPage = React.memo(
    (props: {}) => {
       const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todos)
       const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+
       const dispatch = useDispatch()
 
       useEffect(
          () => {
             dispatch(getTodosTC())
          },
-         [dispatch]
+         [dispatch],
       )
 
       const addTodo = useCallback(

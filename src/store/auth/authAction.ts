@@ -20,9 +20,25 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
       authAPI.login(email, password, rememberMe)
          .then(res => {
             if (res.data.resultCode === 0) {
-               debugger
                dispatch(setAppStatusAC('succeeded'))
                dispatch(setIsLoggedIn(true))
+            } else {
+               handleServerAppError(res.data, dispatch)
+            }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
+         })
+   }
+
+export const logout = () =>
+   (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC('loading'))
+      authAPI.logout()
+         .then(res => {
+            if (res.data.resultCode === 0) {
+               dispatch(setAppStatusAC('succeeded'))
+               dispatch(setIsLoggedIn(false))
             } else {
                handleServerAppError(res.data, dispatch)
             }
