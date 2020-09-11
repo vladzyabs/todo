@@ -32,7 +32,6 @@ export const initializeAppTC = () =>
                dispatch(setIsLoggedIn(true))
             } else {
                dispatch(setAppStatusAC('failed'))
-               // handleServerAppError(res.data, dispatch)
             }
          })
          .catch(error => {

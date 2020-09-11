@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {Route} from 'react-router-dom'
+import {Route, Redirect} from 'react-router-dom'
 import './App.css'
 import {AppBar} from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -56,8 +56,9 @@ function App() {
          </AppBar>
 
          <Container fixed>
-            <Route exact path={'/'} render={() => <TodolistsPage/>}/>
-            <Route exact path={'/login'} render={() => <Login/>}/>
+            <Redirect from={'/'} to={'/todo'}/>
+            <Route path={'/todo'} render={() => <TodolistsPage/>}/>
+            <Route path={'/login'} render={() => <Login/>}/>
          </Container>
 
          <ErrorSnackbar/>

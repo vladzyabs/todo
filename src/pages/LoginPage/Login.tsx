@@ -48,7 +48,7 @@ const Login: React.FC = () => {
    })
 
    if(isLoggedIn) {
-      return <Redirect to={'/'}/>
+      return <Redirect to={'/todo'}/>
    }
 
    return (
@@ -58,7 +58,7 @@ const Login: React.FC = () => {
                <form onSubmit={formik.handleSubmit}>
                   <FormControl>
                      <FormLabel>
-                        <p>To log in get registered
+                        <p>To log in get registered {' '}
                            <a href={'https://social-network.samuraijs.com/'}
                               target={'_blank'}>here
                            </a>
@@ -71,16 +71,18 @@ const Login: React.FC = () => {
                         <TextField
                            label="Email"
                            margin="normal"
+                           error={!!formik.errors.email}
+                           helperText={formik.errors.email}
                            {...formik.getFieldProps('email')}
                         />
-                        {formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
                         <TextField
                            type="password"
                            label="Password"
                            margin="normal"
+                           error={!!formik.errors.password}
+                           helperText={formik.errors.password}
                            {...formik.getFieldProps('password')}
                         />
-                        {formik.errors.password ? <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
                         <FormControlLabel
                            label={'Remember me'}
                            control={<Checkbox/>}
