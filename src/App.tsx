@@ -1,4 +1,5 @@
 import React from 'react'
+import {Route} from 'react-router-dom'
 import './App.css'
 import {AppBar} from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -12,7 +13,8 @@ import {useSelector} from 'react-redux'
 import {AppRootStateType} from './store/store'
 import {RequestStatusType} from './store/app/appType'
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar'
-import TodolistsPage from './pages/TodolistsPage/TodolistsPage';
+import TodolistsPage from './pages/TodolistsPage/TodolistsPage'
+import Login from './pages/LoginPage/Login'
 
 function App() {
    const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
@@ -33,7 +35,8 @@ function App() {
          </AppBar>
 
          <Container fixed>
-            <TodolistsPage/>
+            <Route exact path={'/'} render={() => <TodolistsPage/>}/>
+            <Route exact path={'/login'} render={() => <Login/>}/>
          </Container>
 
          <ErrorSnackbar/>
