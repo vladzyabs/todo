@@ -26,6 +26,9 @@ const TodolistsPage: React.FC = () => {
 
    useEffect(
       () => {
+         if (!isLoggedIn) {
+            return
+         }
          dispatch(getTodosTC)
       }, []
    )

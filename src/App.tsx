@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Route} from 'react-router-dom'
 import './App.css'
 import {AppBar} from '@material-ui/core'
@@ -9,15 +9,30 @@ import Button from '@material-ui/core/Button'
 import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined'
 import Container from '@material-ui/core/Container'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store/store'
 import {RequestStatusType} from './store/app/appType'
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar'
 import TodolistsPage from './pages/TodolistsPage/TodolistsPage'
 import Login from './pages/LoginPage/Login'
+import {initializeAppTC} from './store/app/appAction'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 function App() {
    const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+   const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+   const dispatch = useDispatch()
+
+   useEffect(() => {
+      dispatch(initializeAppTC())
+   }, [])
+
+   if (!isInitialized) {
+      return <div
+         style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+         <CircularProgress/>
+      </div>
+   }
 
    return (
       <div className="App">
