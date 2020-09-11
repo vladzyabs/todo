@@ -29,7 +29,7 @@ const TodolistsPage: React.FC = () => {
          if (!isLoggedIn) {
             return
          }
-         dispatch(getTodosTC)
+         dispatch(getTodosTC())
       }, []
    )
 
