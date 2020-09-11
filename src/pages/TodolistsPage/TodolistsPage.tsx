@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect} from 'react'
+import {Redirect} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import AddItemFrom from '../../components/ AddItemForm/AddItemForm'
 import Todolist from '../../components/Todolist/Todolist'
@@ -19,6 +20,7 @@ import {TasksStateType} from '../../store/task/taskType'
 const TodolistsPage: React.FC = () => {
    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todos)
    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
    const dispatch = useDispatch()
 
@@ -69,6 +71,10 @@ const TodolistsPage: React.FC = () => {
          dispatch(updateTaskTC(todoID, taskID, {title: value})),
       [dispatch],
    )
+
+   if(!isLoggedIn) {
+      return <Redirect to={'/login'}/>
+   }
 
    return (
       <>

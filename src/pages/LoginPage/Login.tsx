@@ -7,8 +7,18 @@ import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
+import {Redirect} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import {AppRootStateType} from '../../store/store'
 
 const Login: React.FC = () => {
+   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+   const dispatch = useDispatch()
+
+   if(isLoggedIn) {
+      return <Redirect to={'/'}/>
+   }
+
    return (
       <>
          <Grid container justify="center">
