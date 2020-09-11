@@ -1,7 +1,8 @@
-import {Dispatch} from 'redux'
 import {APP_SET_ERROR, APP_SET_INITIALIZED, APP_SET_STATUS, RequestStatusType} from './appType'
-import {authAPI} from '../../api/api';
-import {setIsLoggedIn} from '../auth/authAction';
+import {authAPI} from '../../api/api'
+import {Dispatch} from 'redux'
+import {setIsLoggedIn} from '../auth/authAction'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
 // actions =============================================================================================================
 
@@ -26,10 +27,15 @@ export const initializeAppTC = () =>
       authAPI.getMe()
          .then(res => {
             dispatch(setAppInitializedAC(true))
+            dispatch(setAppStatusAC('loading'))
             if (res.data.resultCode === 0) {
                dispatch(setIsLoggedIn(true))
             } else {
-               dispatch(setIsLoggedIn(false))
+               dispatch(setAppStatusAC('failed'))
             }
+         })
+         .catch(error => {
+            dispatch(setAppInitializedAC(true))
+            handleServerNetworkError(error, dispatch)
          })
    }

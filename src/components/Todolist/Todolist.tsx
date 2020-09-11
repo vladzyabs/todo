@@ -38,8 +38,7 @@ const Todolist = React.memo(
       useEffect(
          () => {
             dispatch(getTasksTC(todoID))
-         },
-         [dispatch, todoID],
+         }, []
       )
 
       const addTaskCallback = useCallback(

@@ -58,5 +58,5 @@ export type RequestLoginType = {
    email: string
    password: string
    rememberMe: boolean
-   captcha: boolean
+   captcha?: boolean
 }

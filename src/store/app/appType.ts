@@ -7,5 +7,5 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppStateType = {
    status: RequestStatusType
    error: null | string
-   initialized: boolean
+   isInitialized: boolean
 }

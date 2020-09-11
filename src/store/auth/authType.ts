@@ -1,6 +1,5 @@
-export const AUTH_SET_IS_LOGGED_IN = 'AUTH/SET_IS_LOGGED_IN'
+export const LOGIN_SET_IS_LOGGED_IN = 'LOGIN/SET_IS_LOGGED_IN'
 
-export type AuthStateType = {
+export type authStateType = {
    isLoggedIn: boolean
-   // userID: null | number
 }

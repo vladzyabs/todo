@@ -1,15 +1,14 @@
+import {authStateType} from './authType'
 import {ActionType} from './authAction'
-import {AuthStateType} from './authType'
 
-
-const initialState: AuthStateType = {
-   isLoggedIn: false,
+const initialState: authStateType = {
+   isLoggedIn: false
 }
 
-export const authReducer = (state = initialState, action: ActionType): AuthStateType => {
+export const authReducer = (state = initialState, action: ActionType): authStateType => {
    switch (action.type) {
-      case 'AUTH/SET_IS_LOGGED_IN':
-         return {...state, isLoggedIn: action.status}
+      case 'LOGIN/SET_IS_LOGGED_IN':
+         return {...state, isLoggedIn: action.value}
       default:
          return state
    }

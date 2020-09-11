@@ -1,5 +1,12 @@
 import axios from 'axios'
-import {GetTasksResponseType, ResponseType, TaskAPIType, TodoAPIType, UpdateTaskModelType} from './apiType'
+import {
+   GetTasksResponseType,
+   RequestLoginType,
+   ResponseType,
+   TaskAPIType,
+   TodoAPIType,
+   UpdateTaskModelType,
+} from './apiType'
 
 const settings = {
    withCredentials: true,
@@ -38,8 +45,8 @@ export const taskAPI = {
 export const authAPI = {
    getMe: () =>
       instance.get<ResponseType<{ id: number, email: string, login: string }>>(`/auth/me`),
-   login: (email: string, password: string, rememberMe: boolean, captcha?: string) =>
-      instance.post<ResponseType<{ userId?: number }>>(`/auth/login`, {email, password, rememberMe, captcha}),
+   login: (data: RequestLoginType) =>
+      instance.post<ResponseType<{ userId: number }>>(`/auth/login`, data),
    logout: () =>
       instance.delete<ResponseType>(`/auth/login`),
 }

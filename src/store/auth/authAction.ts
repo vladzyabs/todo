@@ -1,23 +1,24 @@
+import {LOGIN_SET_IS_LOGGED_IN} from './authType'
 import {Dispatch} from 'redux'
 import {authAPI} from '../../api/api'
 import {setAppStatusAC} from '../app/appAction'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
-import {AUTH_SET_IS_LOGGED_IN} from './authType'
+import {RequestLoginType} from '../../api/apiType'
 
 // actions =============================================================================================================
 
-export const setIsLoggedIn = (status: boolean) => ({type: AUTH_SET_IS_LOGGED_IN, status} as const)
+export const setIsLoggedIn = (value: boolean) => ({type: LOGIN_SET_IS_LOGGED_IN, value} as const)
 export type SetIsLoggedInActionType = ReturnType<typeof setIsLoggedIn>
 
 export type ActionType
    = SetIsLoggedInActionType
 
-// thunks ==============================================================================================================
+//thunks ===============================================================================================================
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha?: string) =>
+export const loginTC = (data: RequestLoginType) =>
    (dispatch: Dispatch) => {
       dispatch(setAppStatusAC('loading'))
-      authAPI.login(email, password, rememberMe)
+      authAPI.login(data)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(setAppStatusAC('succeeded'))
@@ -31,14 +32,14 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
          })
    }
 
-export const logout = () =>
+export const logoutTC = () =>
    (dispatch: Dispatch) => {
       dispatch(setAppStatusAC('loading'))
       authAPI.logout()
          .then(res => {
             if (res.data.resultCode === 0) {
-               dispatch(setAppStatusAC('succeeded'))
                dispatch(setIsLoggedIn(false))
+               dispatch(setAppStatusAC('succeeded'))
             } else {
                handleServerAppError(res.data, dispatch)
             }
