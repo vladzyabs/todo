@@ -37,8 +37,7 @@ function App() {
    useEffect(
       () => {
          dispatch(getTodosTC)
-      },
-      [dispatch],
+      }, []
    )
 
    const addTodo = useCallback(
