@@ -16,13 +16,13 @@ const slice = createSlice({
    name: 'app',
    initialState,
    reducers: {
-      setAppStatusAC: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
+      setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
          state.status = action.payload.status
       },
-      setAppErrorAC: (state, action: PayloadAction<{ error: null | string }>) => {
+      setAppError: (state, action: PayloadAction<{ error: null | string }>) => {
          state.error = action.payload.error
       },
-      setAppInitializedAC: (state, action: PayloadAction<{ value: boolean }>) => {
+      setAppInitialized: (state, action: PayloadAction<{ value: boolean }>) => {
          state.isInitialized = action.payload.value
       },
    },
@@ -33,11 +33,10 @@ export const appReducer = slice.reducer
 //actions ==============================================================================================================
 
 export const {
-   setAppErrorAC,
-   setAppStatusAC,
-   setAppInitializedAC,
+   setAppError,
+   setAppStatus,
+   setAppInitialized,
 } = {...slice.actions}
-
 
 // thunks ==============================================================================================================
 
@@ -45,16 +44,16 @@ export const initializeAppTC = () =>
    (dispatch: Dispatch) => {
       authAPI.getMe()
          .then(res => {
-            dispatch(setAppInitializedAC({value: true}))
-            dispatch(setAppStatusAC({status: 'loading'}))
+            dispatch(setAppInitialized({value: true}))
+            dispatch(setAppStatus({status: 'loading'}))
             if (res.data.resultCode === 0) {
                dispatch(setIsLoggedIn({value: true}))
             } else {
-               dispatch(setAppStatusAC({status: 'failed'}))
+               dispatch(setAppStatus({status: 'failed'}))
             }
          })
          .catch(error => {
-            dispatch(setAppInitializedAC({value: true}))
+            dispatch(setAppInitialized({value: true}))
             handleServerNetworkError(error, dispatch)
          })
    }

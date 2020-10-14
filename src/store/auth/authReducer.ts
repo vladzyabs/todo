@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {RequestLoginType} from '../../api/apiType'
 import {Dispatch} from 'redux'
-import {setAppStatusAC} from '../app/appReducer'
+import {setAppStatus} from '../app/appReducer'
 import {authAPI} from '../../api/api'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
@@ -29,11 +29,11 @@ export const {setIsLoggedIn} = {...slice.actions}
 
 export const loginTC = (data: RequestLoginType) =>
    (dispatch: Dispatch) => {
-      dispatch(setAppStatusAC({status: 'loading'}))
+      dispatch(setAppStatus({status: 'loading'}))
       authAPI.login(data)
          .then(res => {
             if (res.data.resultCode === 0) {
-               dispatch(setAppStatusAC({status: 'succeeded'}))
+               dispatch(setAppStatus({status: 'succeeded'}))
                dispatch(setIsLoggedIn({value: true}))
             } else {
                handleServerAppError(res.data, dispatch)
@@ -46,12 +46,12 @@ export const loginTC = (data: RequestLoginType) =>
 
 export const logoutTC = () =>
    (dispatch: Dispatch) => {
-      dispatch(setAppStatusAC({status: 'loading'}))
+      dispatch(setAppStatus({status: 'loading'}))
       authAPI.logout()
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(setIsLoggedIn({value: false}))
-               dispatch(setAppStatusAC({status: 'succeeded'}))
+               dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                handleServerAppError(res.data, dispatch)
             }
