@@ -4,7 +4,7 @@ import {TaskAPIType, UpdateTaskModelType} from '../../api/apiType'
 import {Dispatch} from 'redux'
 import {taskAPI} from '../../api/api'
 import {AppRootStateType} from '../store'
-import {setAppErrorAC, setAppStatusAC} from '../app/appAction'
+import {setAppErrorAC, setAppStatusAC} from '../app/appReducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
 // actions =============================================================================================================
@@ -59,17 +59,17 @@ export type UpdateDomainTaskModelType = {
 
 export const getTasksTC = (todoID: string) =>
    (dispatch: Dispatch) => {
-      dispatch(setAppStatusAC('loading'))
+      dispatch(setAppStatusAC({status: 'loading'}))
       taskAPI.getTasks(todoID)
          .then(res => {
             if (!res.data.error) {
                dispatch(setTasksAC(todoID, res.data.items))
-               dispatch(setAppStatusAC('succeeded'))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                if (res.data.error) {
-                  dispatch(setAppErrorAC(res.data.error))
+                  dispatch(setAppErrorAC({error: res.data.error}))
                } else {
-                  dispatch(setAppErrorAC('Oops, some error occurred'))
+                  dispatch(setAppErrorAC({error: 'Oops, some error occurred'}))
                }
             }
          })
@@ -80,12 +80,12 @@ export const getTasksTC = (todoID: string) =>
 
 export const addTaskTC = (todoID: string, title: string) =>
    (dispatch: Dispatch) => {
-      dispatch(setAppStatusAC('loading'))
+      dispatch(setAppStatusAC({status: 'loading'}))
       taskAPI.createTask(todoID, title)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(addTaskAC(res.data.data.item))
-               dispatch(setAppStatusAC('succeeded'))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                handleServerAppError(res.data, dispatch)
             }
@@ -97,12 +97,12 @@ export const addTaskTC = (todoID: string, title: string) =>
 
 export const removeTaskTC = (todoID: string, taskID: string) =>
    (dispatch: Dispatch) => {
-      dispatch(setAppStatusAC('loading'))
+      dispatch(setAppStatusAC({status: 'loading'}))
       taskAPI.deleteTask(todoID, taskID)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(removeTaskAC(todoID, taskID))
-               dispatch(setAppStatusAC('succeeded'))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                handleServerAppError(res.data, dispatch)
             }
@@ -128,12 +128,12 @@ export const updateTaskTC = (todoID: string, taskID: string, changingValue: Upda
          description: task.description,
          ...changingValue,
       }
-      dispatch(setAppStatusAC('loading'))
+      dispatch(setAppStatusAC({status: 'loading'}))
       taskAPI.updateTask(todoID, taskID, model)
          .then(res => {
             if (res.data.resultCode === 0) {
                dispatch(updateTaskAC(todoID, taskID, model))
-               dispatch(setAppStatusAC('succeeded'))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                handleServerAppError(res.data, dispatch)
             }

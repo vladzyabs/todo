@@ -1,21 +1,60 @@
-import {AppStateType} from './appType'
-import {ActionType} from './appAction'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {Dispatch} from 'redux'
+import {authAPI} from '../../api/api'
+import {setIsLoggedIn} from '../auth/authReducer'
+import {handleServerNetworkError} from '../../utils/errorUtils'
 
-const initialState: AppStateType = {
-   status: 'idle',
-   error: null,
-   isInitialized: false,
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
+const initialState = {
+   status: 'idle' as RequestStatusType,
+   error: null as null | string,
+   isInitialized: false as boolean,
 }
 
-export const appReducer = (state = initialState, action: ActionType): AppStateType => {
-   switch (action.type) {
-      case 'APP/SET_STATUS':
-         return {...state, status: action.status}
-      case 'APP/SET_ERROR':
-         return {...state, error: action.error}
-      case 'APP/SET_INITIALIZED':
-         return {...state, isInitialized: action.value}
-      default:
-         return state
+const slice = createSlice({
+   name: 'app',
+   initialState,
+   reducers: {
+      setAppStatusAC: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
+         state.status = action.payload.status
+      },
+      setAppErrorAC: (state, action: PayloadAction<{ error: null | string }>) => {
+         state.error = action.payload.error
+      },
+      setAppInitializedAC: (state, action: PayloadAction<{ value: boolean }>) => {
+         state.isInitialized = action.payload.value
+      },
+   },
+})
+
+export const appReducer = slice.reducer
+
+//actions ==============================================================================================================
+
+export const {
+   setAppErrorAC,
+   setAppStatusAC,
+   setAppInitializedAC,
+} = {...slice.actions}
+
+
+// thunks ==============================================================================================================
+
+export const initializeAppTC = () =>
+   (dispatch: Dispatch) => {
+      authAPI.getMe()
+         .then(res => {
+            dispatch(setAppInitializedAC({value: true}))
+            dispatch(setAppStatusAC({status: 'loading'}))
+            if (res.data.resultCode === 0) {
+               dispatch(setIsLoggedIn({value: true}))
+            } else {
+               dispatch(setAppStatusAC({status: 'failed'}))
+            }
+         })
+         .catch(error => {
+            dispatch(setAppInitializedAC({value: true}))
+            handleServerNetworkError(error, dispatch)
+         })
    }
-}
