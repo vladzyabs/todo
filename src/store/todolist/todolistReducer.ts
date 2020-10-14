@@ -1,41 +1,119 @@
-import {ActionType} from './todolistAction'
-import {TodolistType} from './todolistsType'
+import {EntityStatusType, FilterType, TodolistType} from './todolistsType'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {TodoAPIType} from '../../api/apiType'
+import {Dispatch} from 'redux'
+import {setAppStatusAC} from '../app/appReducer'
+import {todoAPI} from '../../api/api'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
-const initialState: TodolistType[] = []
+const initialState = [] as TodolistType[]
 
-export const todolistReducer = (state = initialState, action: ActionType): TodolistType[] => {
-   switch (action.type) {
-      case 'SET_TODOS':
-         return action.todos.map(todo => ({...todo, filter: 'all', entityStatus: 'idle'}))
-      case 'ADD_TODO':
+const slice = createSlice({
+   name: 'todo',
+   initialState,
+   reducers: {
+      addTodo: (state, action: PayloadAction<{ todo: TodoAPIType }>) => {
          return [
-            {...action.todo, filter: 'all', entityStatus: 'idle'},
+            {...action.payload.todo, filter: 'all', entityStatus: 'idle'},
             ...state,
          ]
-      case 'REMOVE_TODO':
-         return state.filter(t => t.id !== action.todoID)
-      case 'CHANGE_TITLE_TODO':
-         return state.map(t => {
-            if (t.id === action.todoID) {
-               return {...t, title: action.newValue}
-            }
-            return t
-         })
-      case 'CHANGE_FILTER_TODO':
-         return state.map(t => {
-            if (t.id === action.todoID) {
-               return {...t, filter: action.newValue}
-            }
-            return t
-         })
-      case 'TODO/SET_ENTITE_STATUS':
-         return state.map(t => {
-            if (t.id === action.todoID) {
-               return {...t, entityStatus: action.status}
-            }
-            return t
-         })
-      default:
-         return state
-   }
+      },
+      removeTodo: (state, action: PayloadAction<{ todoID: string }>) => {
+         return state.filter(t => t.id !== action.payload.todoID)
+      },
+      changeTitleTodo: (state, action: PayloadAction<{ todoID: string, title: string }>) => {
+         const index = state.findIndex(todo => todo.id === action.payload.todoID)
+         state[index].title = action.payload.title
+      },
+      changeFilterTodo: (state, action: PayloadAction<{ todoID: string, filter: FilterType }>) => {
+         const index = state.findIndex(todo => todo.id === action.payload.todoID)
+         state[index].filter = action.payload.filter
+      },
+      setTodos: (state, action: PayloadAction<{ todos: TodoAPIType[] }>) => {
+         return action.payload.todos.map(todo => ({...todo, filter: 'all', entityStatus: 'idle'}))
+      },
+      setTodoEntityStatus: (state, action: PayloadAction<{ todoID: string, status: EntityStatusType }>) => {
+         const index = state.findIndex(todo => todo.id === action.payload.todoID)
+         state[index].entityStatus = action.payload.status
+      },
+   },
+})
+
+export const todolistReducer = slice.reducer
+
+// actions =============================================================================================================
+
+export const {
+   addTodo,
+   removeTodo,
+   changeFilterTodo,
+   changeTitleTodo,
+   setTodos,
+   setTodoEntityStatus,
+} = {...slice.actions}
+
+// thunks ==============================================================================================================
+
+export const getTodosTC = () => (dispatch: Dispatch) => {
+   dispatch(setAppStatusAC({status: 'loading'}))
+   todoAPI.getTodos()
+      .then(res => {
+         dispatch(setTodos({todos: res.data}))
+         dispatch(setAppStatusAC({status: 'succeeded'}))
+      })
+      .catch(error => {
+         handleServerNetworkError(error, dispatch)
+      })
 }
+
+export const addTodoTC = (title: string) =>
+   (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC({status: 'loading'}))
+      todoAPI.createTodo(title)
+         .then(res => {
+            if (res.data.resultCode === 0) {
+               dispatch(addTodo({todo: res.data.data.item}))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
+            } else {
+               handleServerAppError(res.data, dispatch)
+            }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
+         })
+   }
+
+export const removeTodoTC = (todoID: string) =>
+   (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC({status: 'loading'}))
+      dispatch(setTodoEntityStatus({todoID, status: 'loading'}))
+      todoAPI.deleteTodo(todoID)
+         .then(res => {
+            if (res.data.resultCode === 0) {
+               dispatch(removeTodo({todoID}))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
+            } else {
+               handleServerAppError(res.data, dispatch)
+            }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
+         })
+   }
+
+export const updateTodoTitleTC = (todoID: string, title: string) =>
+   (dispatch: Dispatch) => {
+      dispatch(setAppStatusAC({status: 'loading'}))
+      todoAPI.updateTodo(todoID, title)
+         .then(res => {
+            if (res.data.resultCode === 0) {
+               dispatch(changeTitleTodo({todoID, title}))
+               dispatch(setAppStatusAC({status: 'succeeded'}))
+            } else {
+               handleServerAppError(res.data, dispatch)
+            }
+         })
+         .catch(error => {
+            handleServerNetworkError(error, dispatch)
+         })
+   }

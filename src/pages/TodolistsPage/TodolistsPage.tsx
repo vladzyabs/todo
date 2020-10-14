@@ -5,11 +5,11 @@ import AddItemFrom from '../../components/ AddItemForm/AddItemForm'
 import Todolist from '../../components/Todolist/Todolist'
 import {
    addTodoTC,
-   changeFilterTodoAC,
+   changeFilterTodo,
    getTodosTC,
    removeTodoTC,
    updateTodoTitleTC,
-} from '../../store/todolist/todolistAction'
+} from '../../store/todolist/todolistReducer'
 import {FilterType, TodolistType} from '../../store/todolist/todolistsType'
 import {addTaskTC, removeTaskTC, updateTaskTC} from '../../store/task/taskAction'
 import {TaskStatuses} from '../../api/apiType'
@@ -49,7 +49,7 @@ const TodolistsPage: React.FC = () => {
    )
 
    const changeFilter = useCallback(
-      (todoID: string, value: FilterType) => dispatch(changeFilterTodoAC(todoID, value)),
+      (todoID: string, filter: FilterType) => dispatch(changeFilterTodo({todoID, filter})),
       [dispatch],
    )
 

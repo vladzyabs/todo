@@ -1,13 +1,14 @@
 import {ActionType} from './taskAction'
 import {TasksStateType, TasksType} from './taskType'
+import {setTodos, addTodo, removeTodo} from '../todolist/todolistReducer'
 
 const initialState: TasksStateType = {}
 
-export const taskReducer = (state = initialState, action: ActionType): TasksStateType => {
+export const taskReducer = (state = initialState, action: any): TasksStateType => {
    switch (action.type) {
-      case 'SET_TODOS':
+      case setTodos.type:
          const copyState = {...state}
-         action.todos.forEach(todo => {
+         action.payload.todos.forEach((todo: any) => {
             return copyState[todo.id] = []
          })
          return copyState
@@ -34,13 +35,13 @@ export const taskReducer = (state = initialState, action: ActionType): TasksStat
                return {...t, ...action.model}
             }),
          }
-      case 'ADD_TODO':
+      case addTodo.type:
          return {
             ...state,
-            [action.todo.id]: [],
+            [action.payload.todo.id]: [],
          }
-      case 'REMOVE_TODO':
-         delete state[action.todoID]
+      case removeTodo.type:
+         delete state[action.payload.todoID]
          return {...state}
       default:
          return state

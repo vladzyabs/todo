@@ -1,5 +1,5 @@
 import {ADD_TASK, REMOVE_TASK, SET_TASKS, UPDATE_TASK} from './taskType'
-import {AddTodoActionType, RemoveTodoActionType, SetTodosActionType} from '../todolist/todolistAction'
+import {addTodo, removeTodo, setTodos} from '../todolist/todolistReducer'
 import {TaskAPIType, UpdateTaskModelType} from '../../api/apiType'
 import {Dispatch} from 'redux'
 import {taskAPI} from '../../api/api'
@@ -41,9 +41,9 @@ export type ActionType
    = AddTaskActionType
    | RemoveTaskActionType
    | UpdateTaskActionType
-   | AddTodoActionType
-   | RemoveTodoActionType
-   | SetTodosActionType
+   | ReturnType<typeof addTodo>
+   | ReturnType<typeof removeTodo>
+   | ReturnType<typeof setTodos>
    | SetTasksActionType
 
 // thunks ==============================================================================================================
