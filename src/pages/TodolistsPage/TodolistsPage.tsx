@@ -11,7 +11,7 @@ import {
    updateTodoTitleTC,
 } from '../../store/todolist/todolistReducer'
 import {FilterType, TodolistType} from '../../store/todolist/todolistsType'
-import {addTaskTC, removeTaskTC, updateTaskTC} from '../../store/task/taskAction'
+import {addTaskTC, removeTaskTC, updateTaskTC} from '../../store/task/taskReducer'
 import {TaskStatuses} from '../../api/apiType'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from '../../store/store'
@@ -30,7 +30,7 @@ const TodolistsPage: React.FC = () => {
             return
          }
          dispatch(getTodosTC())
-      }, []
+      }, [],
    )
 
    const addTodo = useCallback(
@@ -75,7 +75,7 @@ const TodolistsPage: React.FC = () => {
       [dispatch],
    )
 
-   if(!isLoggedIn) {
+   if (!isLoggedIn) {
       return <Redirect to={'/login'}/>
    }
 
