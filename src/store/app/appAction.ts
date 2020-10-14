@@ -1,7 +1,7 @@
 import {APP_SET_ERROR, APP_SET_INITIALIZED, APP_SET_STATUS, RequestStatusType} from './appType'
 import {authAPI} from '../../api/api'
 import {Dispatch} from 'redux'
-import {setIsLoggedIn} from '../auth/authAction'
+import {setIsLoggedIn} from '../auth/authReducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 
 // actions =============================================================================================================
@@ -29,7 +29,7 @@ export const initializeAppTC = () =>
             dispatch(setAppInitializedAC(true))
             dispatch(setAppStatusAC('loading'))
             if (res.data.resultCode === 0) {
-               dispatch(setIsLoggedIn(true))
+               dispatch(setIsLoggedIn({value: true}))
             } else {
                dispatch(setAppStatusAC('failed'))
             }

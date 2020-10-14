@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from '../../store/store'
 import {useFormik} from 'formik'
 import {RequestLoginType} from '../../api/apiType'
-import {loginTC} from '../../store/auth/authAction'
+import {loginTC} from '../../store/auth/authReducer'
 
 const validate = (values: RequestLoginType) => {
    const errors: any = {}
