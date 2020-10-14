@@ -1,7 +1,5 @@
 import {TodolistType} from './todolistsType'
-import {todolistReducer} from './todolistReducer'
-import * as actions from './todolistAction'
-import {setTodosAC} from './todolistAction'
+import {todolistReducer, addTodo, removeTodo, changeTitleTodo, changeFilterTodo, setTodos} from './todolistReducer'
 
 let initialState: TodolistType[]
 let endState: TodolistType[]
@@ -15,7 +13,8 @@ beforeEach(() => {
 })
 
 test('new todo should be added', () => {
-   let action = actions.addTodoAC({id: 'new', title: 'new', order: 0, addedDate: 'now'})
+   const newTodo = {id: 'new', title: 'new', order: 0, addedDate: 'now'}
+   let action = addTodo({todo: newTodo})
 
    endState = todolistReducer(initialState, action)
 
@@ -26,7 +25,7 @@ test('new todo should be added', () => {
 })
 
 test('correct todo should be removed', () => {
-   let action = actions.removeTodoAC('1')
+   let action = removeTodo({todoID: '1'})
 
    endState = todolistReducer(initialState, action)
 
@@ -35,7 +34,7 @@ test('correct todo should be removed', () => {
 })
 
 test('correct todo should change its title', () => {
-   let action = actions.changeTitleTodoAC('2', 'change')
+   let action = changeTitleTodo({todoID: '2', title: 'change'})
 
    endState = todolistReducer(initialState, action)
 
@@ -47,7 +46,7 @@ test('correct todo should change its title', () => {
 })
 
 test('correct todo should change its filter', () => {
-   let action = actions.changeFilterTodoAC('3', 'completed')
+   let action = changeFilterTodo({todoID: '3', filter: 'completed'})
 
    endState = todolistReducer(initialState, action)
 
@@ -58,10 +57,11 @@ test('correct todo should change its filter', () => {
 })
 
 test('todolists should be added', () => {
-   const action = setTodosAC([
+   const todos = [
       {id: '1', title: 'title 1', order: 0, addedDate: ''},
       {id: '2', title: 'title 2', order: 0, addedDate: ''},
-   ])
+   ]
+   const action = setTodos({todos})
 
    const endState = todolistReducer([], action)
 
