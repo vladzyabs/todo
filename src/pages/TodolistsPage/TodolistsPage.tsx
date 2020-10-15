@@ -4,9 +4,9 @@ import Grid from '@material-ui/core/Grid'
 import AddItemFrom from '../../components/ AddItemForm/AddItemForm'
 import Todolist from '../../components/Todolist/Todolist'
 import {
+   fetchTodo,
    addTodoTC,
    changeFilterTodo,
-   getTodosTC,
    removeTodoTC,
    updateTodoTitleTC,
 } from '../../store/todolist/todolistReducer'
@@ -29,22 +29,22 @@ const TodolistsPage: React.FC = () => {
          if (!isLoggedIn) {
             return
          }
-         dispatch(getTodosTC())
+         dispatch(fetchTodo())
       }, [],
    )
 
    const addTodo = useCallback(
-      (title: string) => dispatch(addTodoTC(title)),
+      (title: string) => dispatch(addTodoTC({title})),
       [dispatch],
    )
 
    const removeTodo = useCallback(
-      (todoID: string) => dispatch(removeTodoTC(todoID)),
+      (todoID: string) => dispatch(removeTodoTC({todoID})),
       [dispatch],
    )
 
    const changeTodoTitle = useCallback(
-      (todoID: string, value: string) => dispatch(updateTodoTitleTC(todoID, value)),
+      (todoID: string, title: string) => dispatch(updateTodoTitleTC({todoID, title})),
       [dispatch],
    )
 

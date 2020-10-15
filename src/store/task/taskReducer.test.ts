@@ -1,6 +1,6 @@
 import {TasksStateType} from './taskType'
 import {taskReducer, addTaskTC, removeTaskTC, updateTaskTC, fetchTasksTC} from './taskReducer'
-import {todolistReducer, removeTodo, addTodo, setTodos} from '../todolist/todolistReducer'
+import {todolistReducer, removeTodoTC, addTodoTC, fetchTodo} from '../todolist/todolistReducer'
 import {TaskStatuses, TodoTaskPriority} from '../../api/apiType'
 import {TodolistType} from '../todolist/todolistsType'
 
@@ -155,7 +155,7 @@ test('correct task should change its title', () => {
 })
 
 test('property with todolistId should be deleted', () => {
-   let action = removeTodo({todoID: '1'})
+   let action = removeTodoTC.fulfilled({todoID: '1'}, 'requestId', {todoID: '1'})
 
    endState = taskReducer(initialState, action)
 
@@ -168,7 +168,8 @@ test('ids should be equals', () => {
    const startTodoState: TodolistType[] = []
    const startTaskState: TasksStateType = {}
    const newTodo = {id: '1', title: 'new', order: 0, addedDate: ''}
-   const action = addTodo({todo: newTodo})
+   // @ts-ignore
+   const action = addTodoTC.fulfilled({todo: newTodo}, 'requestId', {todo: newTodo})
 
    const endTodoState = todolistReducer(startTodoState, action)
    const endTaskState = taskReducer(startTaskState, action)
@@ -186,7 +187,8 @@ test('empty arrays should be added when we set todolists', () => {
       {id: '1', title: 'title 1', order: 0, addedDate: ''},
       {id: '2', title: 'title 2', order: 0, addedDate: ''},
    ]
-   const action = setTodos({todos})
+   // @ts-ignore
+   const action = fetchTodo.fulfilled({todos}, 'requestId', {todos})
 
    const endState = taskReducer({}, action)
 

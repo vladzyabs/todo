@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {UpdateTaskModelType} from '../../api/apiType'
 import {AppRootStateType} from '../store'
 import {setAppError, setAppStatus} from '../app/appReducer'
-import {setTodos, addTodo, removeTodo} from '../todolist/todolistReducer'
+import {fetchTodo, addTodoTC, removeTodoTC} from '../todolist/todolistReducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
 import {TasksStateType, TasksType, UpdateDomainTaskModelType} from './taskType'
 import {taskAPI} from '../../api/api'
@@ -104,15 +104,15 @@ const slice = createSlice({
    initialState,
    reducers: {},
    extraReducers: builder => {
-      builder.addCase(setTodos, (state, action) => {
+      builder.addCase(fetchTodo.fulfilled, (state, action) => {
          action.payload.todos.forEach(todo => {
             state[todo.id] = []
          })
       })
-      builder.addCase(addTodo, (state, action) => {
+      builder.addCase(addTodoTC.fulfilled, (state, action) => {
          state[action.payload.todo.id] = []
       })
-      builder.addCase(removeTodo, (state, action) => {
+      builder.addCase(removeTodoTC.fulfilled, (state, action) => {
          delete state[action.payload.todoID]
       })
       builder.addCase(fetchTasksTC.fulfilled, (state, action) => {
