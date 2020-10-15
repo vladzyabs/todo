@@ -12,7 +12,7 @@ import {EntityStatusType, FilterType} from '../../store/todolist/todolistsType'
 import Task from '../Task/Task'
 import {TaskStatuses} from '../../api/apiType'
 import {useDispatch} from 'react-redux'
-import {getTasksTC} from '../../store/task/taskReducer'
+import {fetchTasksTC} from '../../store/task/taskReducer'
 
 type TodolistPropsType = {
    todoID: string
@@ -37,7 +37,7 @@ const Todolist = React.memo(
 
       useEffect(
          () => {
-            dispatch(getTasksTC(todoID))
+            dispatch(fetchTasksTC(todoID))
          }, []
       )
 

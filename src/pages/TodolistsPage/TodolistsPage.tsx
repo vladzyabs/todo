@@ -54,24 +54,24 @@ const TodolistsPage: React.FC = () => {
    )
 
    const addTask = useCallback(
-      (todoID: string, title: string) => dispatch(addTaskTC(todoID, title)),
+      (todoID: string, title: string) => dispatch(addTaskTC({todoID, title})),
       [dispatch],
    )
 
    const removeTask = useCallback(
-      (todoID: string, taskID: string) => dispatch(removeTaskTC(todoID, taskID)),
+      (todoID: string, taskID: string) => dispatch(removeTaskTC({todoID, taskID})),
       [dispatch],
    )
 
    const changeTaskStatus = useCallback(
-      (todoID: string, taskID: string, value: TaskStatuses) =>
-         dispatch(updateTaskTC(todoID, taskID, {status: value})),
+      (todoID: string, taskID: string, status: TaskStatuses) =>
+         dispatch(updateTaskTC({todoID, taskID, changingValue: {status}})),
       [dispatch],
    )
 
    const changeTaskTitle = useCallback(
-      (todoID: string, taskID: string, value: string) =>
-         dispatch(updateTaskTC(todoID, taskID, {title: value})),
+      (todoID: string, taskID: string, title: string) =>
+         dispatch(updateTaskTC({todoID, taskID, changingValue: {title}})),
       [dispatch],
    )
 
