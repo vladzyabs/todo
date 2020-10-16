@@ -1,6 +1,7 @@
 import {TasksStateType} from './taskType'
 import {taskReducer, addTaskTC, removeTaskTC, updateTaskTC, fetchTasksTC} from './taskReducer'
-import {todolistReducer, removeTodoTC, addTodoTC, fetchTodo} from '../todolist/todolistReducer'
+import {removeTodoTC, addTodoTC, fetchTodo} from '../todolist/todolistThunks'
+import {todolistReducer} from '../todolist/todolistReducer'
 import {TaskStatuses, TodoTaskPriority} from '../../api/apiType'
 import {TodolistType} from '../todolist/todolistsType'
 

@@ -6,10 +6,10 @@ import Todolist from '../../components/Todolist/Todolist'
 import {
    fetchTodo,
    addTodoTC,
-   changeFilterTodo,
    removeTodoTC,
    updateTodoTitleTC,
-} from '../../store/todolist/todolistReducer'
+} from '../../store/todolist/todolistThunks'
+import {changeFilterTodo} from '../../store/todolist/todolistReducer'
 import {FilterType, TodolistType} from '../../store/todolist/todolistsType'
 import {addTaskTC, removeTaskTC, updateTaskTC} from '../../store/task/taskReducer'
 import {TaskStatuses} from '../../api/apiType'

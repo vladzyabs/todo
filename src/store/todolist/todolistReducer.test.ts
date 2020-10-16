@@ -1,5 +1,6 @@
 import {TodolistType} from './todolistsType'
-import {todolistReducer, addTodoTC, removeTodoTC, updateTodoTitleTC, changeFilterTodo, fetchTodo} from './todolistReducer'
+import {addTodoTC, removeTodoTC, updateTodoTitleTC, fetchTodo} from './todolistThunks'
+import {todolistReducer, changeFilterTodo} from './todolistReducer'
 
 let initialState: TodolistType[]
 let endState: TodolistType[]
