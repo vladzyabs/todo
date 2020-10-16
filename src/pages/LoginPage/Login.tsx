@@ -46,7 +46,7 @@ const Login: React.FC = () => {
          password: '',
          rememberMe: false,
       },
-      // validate,
+      validate,
       onSubmit: async (values: FormValueType, formikHelpers: FormikHelpers<FormValueType>) => {
          const action = await dispatch(login(values))
          if (login.rejected.match(action)) {
