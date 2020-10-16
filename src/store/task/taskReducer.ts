@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {fetchTodo, addTodoTC, removeTodoTC} from '../todolist/todolistThunks'
 import {fetchTasksTC, addTaskTC, removeTaskTC, updateTaskTC} from './taskThunks'
 import {TasksStateType, TasksType} from './taskType'
@@ -8,7 +8,11 @@ const initialState = {} as TasksStateType
 const slice = createSlice({
    name: 'tasks',
    initialState,
-   reducers: {},
+   reducers: {
+      resetTasks: (state, action: PayloadAction<{}>) => {
+         for (let key in state) delete state[key]
+      },
+   },
    extraReducers: builder => {
       builder.addCase(fetchTodo.fulfilled, (state, action) => {
          action.payload.todos.forEach(todo => {
@@ -45,3 +49,5 @@ const slice = createSlice({
 })
 
 export const taskReducer = slice.reducer
+
+export const {resetTasks} = slice.actions

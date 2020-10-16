@@ -1,22 +1,24 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {RequestLoginType} from '../../api/apiType'
-import {Dispatch} from 'redux'
-import {setAppStatus} from '../app/appReducer'
-import {authAPI} from '../../api/api'
-import {handleServerAppError, handleServerNetworkError} from '../../utils/errorUtils'
-
-const initialState = {
-   isLoggedIn: false,
-}
+import {login, logout} from './authThunks'
 
 const slice = createSlice({
    name: 'auth',
-   initialState,
+   initialState: {
+      isLoggedIn: false,
+   },
    reducers: {
       setIsLoggedIn: (state, action: PayloadAction<{ value: boolean }>) => {
          state.isLoggedIn = action.payload.value
       },
    },
+   extraReducers: builder => {
+      builder.addCase(login.fulfilled, (state, action) => {
+         state.isLoggedIn = action.payload.isLoggedIn
+      })
+      builder.addCase(logout.fulfilled, (state, action) => {
+         state.isLoggedIn = action.payload.isLoggedIn
+      })
+   }
 })
 
 export const authReducer = slice.reducer
@@ -24,39 +26,3 @@ export const authReducer = slice.reducer
 // actions =============================================================================================================
 
 export const {setIsLoggedIn} = {...slice.actions}
-
-// thunks ==============================================================================================================
-
-export const loginTC = (data: RequestLoginType) =>
-   (dispatch: Dispatch) => {
-      dispatch(setAppStatus({status: 'loading'}))
-      authAPI.login(data)
-         .then(res => {
-            if (res.data.resultCode === 0) {
-               dispatch(setAppStatus({status: 'succeeded'}))
-               dispatch(setIsLoggedIn({value: true}))
-            } else {
-               handleServerAppError(res.data, dispatch)
-            }
-         })
-         .catch(error => {
-            handleServerNetworkError(error, dispatch)
-         })
-   }
-
-export const logoutTC = () =>
-   (dispatch: Dispatch) => {
-      dispatch(setAppStatus({status: 'loading'}))
-      authAPI.logout()
-         .then(res => {
-            if (res.data.resultCode === 0) {
-               dispatch(setIsLoggedIn({value: false}))
-               dispatch(setAppStatus({status: 'succeeded'}))
-            } else {
-               handleServerAppError(res.data, dispatch)
-            }
-         })
-         .catch(error => {
-            handleServerNetworkError(error, dispatch)
-         })
-   }

@@ -5,6 +5,7 @@ import {appReducer} from './app/appReducer'
 import {authReducer} from './auth/authReducer'
 import {todolistReducer} from './todolist/todolistReducer'
 import {taskReducer} from './task/taskReducer'
+import {useDispatch} from 'react-redux'
 
 const rootReducer = combineReducers({
    app: appReducer,
@@ -19,3 +20,6 @@ export const store = configureStore({
 })
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
+
+type AppDispatchType = typeof store.dispatch
+export const useAppDispatch = () => useDispatch<AppDispatchType>()
