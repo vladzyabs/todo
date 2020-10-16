@@ -1,5 +1,6 @@
 import {TodolistType} from './todolistsType'
-import {todolistReducer, addTodo, removeTodo, changeTitleTodo, changeFilterTodo, setTodos} from './todolistReducer'
+import {addTodoTC, removeTodoTC, updateTodoTitleTC, fetchTodo} from './todolistThunks'
+import {todolistReducer, changeFilterTodo} from './todolistReducer'
 
 let initialState: TodolistType[]
 let endState: TodolistType[]
@@ -14,7 +15,8 @@ beforeEach(() => {
 
 test('new todo should be added', () => {
    const newTodo = {id: 'new', title: 'new', order: 0, addedDate: 'now'}
-   let action = addTodo({todo: newTodo})
+   // @ts-ignore
+   let action = addTodoTC.fulfilled({todo: newTodo}, 'requestId', {todo: newTodo})
 
    endState = todolistReducer(initialState, action)
 
@@ -25,7 +27,7 @@ test('new todo should be added', () => {
 })
 
 test('correct todo should be removed', () => {
-   let action = removeTodo({todoID: '1'})
+   let action = removeTodoTC.fulfilled({todoID: '1'}, 'requestId', {todoID: '1'})
 
    endState = todolistReducer(initialState, action)
 
@@ -34,7 +36,7 @@ test('correct todo should be removed', () => {
 })
 
 test('correct todo should change its title', () => {
-   let action = changeTitleTodo({todoID: '2', title: 'change'})
+   let action = updateTodoTitleTC.fulfilled({todoID: '2', title: 'change'}, 'requestId', {todoID: '2', title: 'change'})
 
    endState = todolistReducer(initialState, action)
 
@@ -61,7 +63,8 @@ test('todolists should be added', () => {
       {id: '1', title: 'title 1', order: 0, addedDate: ''},
       {id: '2', title: 'title 2', order: 0, addedDate: ''},
    ]
-   const action = setTodos({todos})
+   // @ts-ignore
+   const action = fetchTodo.fulfilled({todos}, 'requestId', {todos})
 
    const endState = todolistReducer([], action)
 

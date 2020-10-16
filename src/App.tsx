@@ -17,7 +17,7 @@ import TodolistsPage from './pages/TodolistsPage/TodolistsPage'
 import Login from './pages/LoginPage/Login'
 import {initializeAppTC} from './store/app/appReducer'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import {logoutTC} from './store/auth/authReducer'
+import {logout} from './store/auth/authThunks'
 
 function App() {
    const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
@@ -30,7 +30,7 @@ function App() {
    }, [])
 
    const logoutHandler = () => {
-      dispatch(logoutTC())
+      dispatch(logout())
    }
 
    if (!isInitialized) {

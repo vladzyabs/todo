@@ -10,3 +10,12 @@ export type TasksType = TaskAPIType
 export type TasksStateType = {
    [key: string]: TasksType[]
 }
+
+export type UpdateDomainTaskModelType = {
+   title?: string
+   description?: string
+   status?: number
+   priority?: number
+   startDate?: string
+   deadline?: string
+}
