@@ -41,19 +41,18 @@ export const {
 // thunks ==============================================================================================================
 
 export const initializeAppTC = () =>
-   (dispatch: Dispatch) => {
-      authAPI.getMe()
-         .then(res => {
-            dispatch(setAppInitialized({value: true}))
-            dispatch(setAppStatus({status: 'loading'}))
-            if (res.data.resultCode === 0) {
-               dispatch(setIsLoggedIn({value: true}))
-            } else {
-               dispatch(setAppStatus({status: 'failed'}))
-            }
-         })
-         .catch(error => {
-            dispatch(setAppInitialized({value: true}))
-            handleServerNetworkError(error, dispatch)
-         })
+   async (dispatch: Dispatch) => {
+      try {
+         const res = await authAPI.getMe()
+         dispatch(setAppInitialized({value: true}))
+         dispatch(setAppStatus({status: 'loading'}))
+         if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedIn({value: true}))
+         } else {
+            dispatch(setAppStatus({status: 'failed'}))
+         }
+      } catch (error) {
+         dispatch(setAppInitialized({value: true}))
+         handleServerNetworkError(error, dispatch)
+      }
    }
