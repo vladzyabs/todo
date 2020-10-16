@@ -12,7 +12,7 @@ import {EntityStatusType, FilterType} from '../../store/todolist/todolistsType'
 import Task from '../Task/Task'
 import {TaskStatuses} from '../../api/apiType'
 import {useDispatch} from 'react-redux'
-import {fetchTasksTC} from '../../store/task/taskReducer'
+import {fetchTasksTC} from '../../store/task/taskThunks'
 
 type TodolistPropsType = {
    todoID: string

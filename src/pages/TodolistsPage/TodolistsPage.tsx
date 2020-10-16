@@ -11,7 +11,7 @@ import {
 } from '../../store/todolist/todolistThunks'
 import {changeFilterTodo} from '../../store/todolist/todolistReducer'
 import {FilterType, TodolistType} from '../../store/todolist/todolistsType'
-import {addTaskTC, removeTaskTC, updateTaskTC} from '../../store/task/taskReducer'
+import {addTaskTC, removeTaskTC, updateTaskTC} from '../../store/task/taskThunks'
 import {TaskStatuses} from '../../api/apiType'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from '../../store/store'
